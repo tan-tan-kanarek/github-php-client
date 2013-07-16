@@ -1,7 +1,9 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubGitCommitAuthor.php');
+require_once(__DIR__ . '/GitHubGitCommitCommitter.php');
+require_once(__DIR__ . '/GitHubGitCommitTree.php');
 	
 
 class GitHubGitCommit extends GitHubObject
@@ -11,7 +13,14 @@ class GitHubGitCommit extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'sha' => 'string',
+			'url' => 'string',
+			'message' => 'string',
+			'author' => 'GitHubGitCommitAuthor',
+			'committer' => 'GitHubGitCommitCommitter',
+			'tree' => 'GitHubGitCommitTree',
+		));
 	}
 	
 	/**
@@ -30,9 +39,19 @@ class GitHubGitCommit extends GitHubObject
 	protected $message;
 
 	/**
-	 * @var array<GitHubGitCommitParents>
+	 * @var GitHubGitCommitAuthor
 	 */
-	protected $parents;
+	protected $author;
+
+	/**
+	 * @var GitHubGitCommitCommitter
+	 */
+	protected $committer;
+
+	/**
+	 * @var GitHubGitCommitTree
+	 */
+	protected $tree;
 
 	/**
 	 * @return string
@@ -59,11 +78,27 @@ class GitHubGitCommit extends GitHubObject
 	}
 
 	/**
-	 * @return array<GitHubGitCommitParents>
+	 * @return GitHubGitCommitAuthor
 	 */
-	public function getParents()
+	public function getAuthor()
 	{
-		return $this->parents;
+		return $this->author;
+	}
+
+	/**
+	 * @return GitHubGitCommitCommitter
+	 */
+	public function getCommitter()
+	{
+		return $this->committer;
+	}
+
+	/**
+	 * @return GitHubGitCommitTree
+	 */
+	public function getTree()
+	{
+		return $this->tree;
 	}
 
 }

@@ -11,7 +11,16 @@ class GitHubDownload extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'html_url' => 'string',
+			'id' => 'int',
+			'name' => 'string',
+			'description' => 'string',
+			'size' => 'int',
+			'download_count' => 'int',
+			'content_type' => 'string',
+		));
 	}
 	
 	/**

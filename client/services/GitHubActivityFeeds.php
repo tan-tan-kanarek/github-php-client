@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubFeeds.php');
 	
 
@@ -16,11 +17,7 @@ class GitHubActivityFeeds extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/feeds", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/feeds]");
-		
-		return new GitHubFeeds($response);
+		return $this->client->request("/feeds", 'GET', $data, 200, 'GitHubFeeds');
 	}
 	
 }

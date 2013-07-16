@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubGistComment.php');
 	
 
@@ -10,17 +11,25 @@ class GitHubGistsComments extends GitHubService
 	/**
 	 * List comments on a gist
 	 * 
-	 * @return GitHubGistComment
+	 * @return array<GitHubGistComment>
 	 */
-	public function listCommentsOnGist($gist_id, $id)
+	public function listCommentsOnGist($gist_id)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/gists/$gist_id/comments/$id", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/gists/$gist_id/comments/$id]");
+		return $this->client->request("/gists/$gist_id/comments", 'GET', $data, 200, 'GitHubGistComment', true);
+	}
+	
+	/**
+	 * Get a single comment
+	 * 
+	 * @return GitHubGistComment
+	 */
+	public function getSingleComment($gist_id, $id)
+	{
+		$data = array();
 		
-		return new GitHubGistComment($response);
+		return $this->client->request("/gists/$gist_id/comments/$id", 'GET', $data, 200, 'GitHubGistComment');
 	}
 	
 	/**
@@ -32,11 +41,7 @@ class GitHubGistsComments extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/gists/$gist_id/comments/$id", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/gists/$gist_id/comments/$id]");
-		
-		return new GitHubGistComment($response);
+		return $this->client->request("/gists/$gist_id/comments/$id", 'PATCH', $data, 200, 'GitHubGistComment');
 	}
 	
 	/**
@@ -47,9 +52,7 @@ class GitHubGistsComments extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/gists/$gist_id/comments/$id", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/gists/$gist_id/comments/$id]");
+		return $this->client->request("/gists/$gist_id/comments/$id", 'DELETE', $data, 204, '');
 	}
 	
 }

@@ -1,7 +1,8 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubGittagTagger.php');
+require_once(__DIR__ . '/GitHubGittagObject.php');
 	
 
 class GitHubGittag extends GitHubObject
@@ -11,7 +12,14 @@ class GitHubGittag extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'tag' => 'string',
+			'sha' => 'string',
+			'url' => 'string',
+			'message' => 'string',
+			'tagger' => 'GitHubGittagTagger',
+			'object' => 'GitHubGittagObject',
+		));
 	}
 	
 	/**
@@ -33,6 +41,16 @@ class GitHubGittag extends GitHubObject
 	 * @var string
 	 */
 	protected $message;
+
+	/**
+	 * @var GitHubGittagTagger
+	 */
+	protected $tagger;
+
+	/**
+	 * @var GitHubGittagObject
+	 */
+	protected $object;
 
 	/**
 	 * @return string
@@ -64,6 +82,22 @@ class GitHubGittag extends GitHubObject
 	public function getMessage()
 	{
 		return $this->message;
+	}
+
+	/**
+	 * @return GitHubGittagTagger
+	 */
+	public function getTagger()
+	{
+		return $this->tagger;
+	}
+
+	/**
+	 * @return GitHubGittagObject
+	 */
+	public function getObject()
+	{
+		return $this->object;
 	}
 
 }

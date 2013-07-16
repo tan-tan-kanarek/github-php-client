@@ -11,7 +11,10 @@ class GitHubFeedsLinksTimeline extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'href' => 'string',
+			'type' => 'string',
+		));
 	}
 	
 	/**

@@ -1,11 +1,13 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/GitHubUsersEmails.php');
 require_once(__DIR__ . '/GitHubUsersFollowers.php');
 require_once(__DIR__ . '/GitHubUsersKeys.php');
 require_once(__DIR__ . '/../objects/GitHubFullUser.php');
 require_once(__DIR__ . '/../objects/GitHubPrivateUser.php');
+require_once(__DIR__ . '/../objects/GitHubUser.php');
 	
 
 class GitHubUsers extends GitHubService
@@ -48,11 +50,7 @@ class GitHubUsers extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/users/$user", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/users/$user]");
-		
-		return new GitHubFullUser($response);
+		return $this->client->request("/users/$user", 'GET', $data, 200, 'GitHubFullUser');
 	}
 	
 	/**
@@ -64,18 +62,14 @@ class GitHubUsers extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/user", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/user]");
-		
-		return new GitHubPrivateUser($response);
+		return $this->client->request("/user", 'GET', $data, 200, 'GitHubPrivateUser');
 	}
 	
 	/**
 	 * Update the authenticated user
 	 * 
 	 * @param $email string (Optional) - Publicly visible email address.
-	 * @return GitHubFullUser
+	 * @return GitHubPrivateUser
 	 */
 	public function updateTheAuthenticatedUser($email = null)
 	{
@@ -83,11 +77,19 @@ class GitHubUsers extends GitHubService
 		if(!is_null($email))
 			$data['email'] = $email;
 		
-		list($httpCode, $response) = $this->request("/user", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/user]");
+		return $this->client->request("/user", 'PATCH', $data, 200, 'GitHubPrivateUser');
+	}
+	
+	/**
+	 * Get all users
+	 * 
+	 * @return array<GitHubUser>
+	 */
+	public function getAllUsers()
+	{
+		$data = array();
 		
-		return new GitHubFullUser($response);
+		return $this->client->request("/users", 'GET', $data, 200, 'GitHubUser', true);
 	}
 	
 }

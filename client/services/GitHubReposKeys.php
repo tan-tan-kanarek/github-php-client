@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubPublicKey.php');
 	
 
@@ -10,17 +11,25 @@ class GitHubReposKeys extends GitHubService
 	/**
 	 * List
 	 * 
-	 * @return GitHubPublicKey
+	 * @return array<GitHubPublicKey>
 	 */
-	public function listReposKeys($owner, $repo, $id)
+	public function listReposKeys($owner, $repo)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/keys/$id", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/keys/$id]");
+		return $this->client->request("/repos/$owner/$repo/keys", 'GET', $data, 200, 'GitHubPublicKey', true);
+	}
+	
+	/**
+	 * Get
+	 * 
+	 * @return GitHubPublicKey
+	 */
+	public function get($owner, $repo, $id)
+	{
+		$data = array();
 		
-		return new GitHubPublicKey($response);
+		return $this->client->request("/repos/$owner/$repo/keys/$id", 'GET', $data, 200, 'GitHubPublicKey');
 	}
 	
 	/**
@@ -32,11 +41,7 @@ class GitHubReposKeys extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/keys/$id", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/keys/$id]");
-		
-		return new GitHubPublicKey($response);
+		return $this->client->request("/repos/$owner/$repo/keys/$id", 'PATCH', $data, 200, 'GitHubPublicKey');
 	}
 	
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/GitHubReposCollaborators.php');
 require_once(__DIR__ . '/GitHubReposComments.php');
 require_once(__DIR__ . '/GitHubReposCommits.php');
@@ -12,6 +13,13 @@ require_once(__DIR__ . '/GitHubReposKeys.php');
 require_once(__DIR__ . '/GitHubReposMerging.php');
 require_once(__DIR__ . '/GitHubReposStatistics.php');
 require_once(__DIR__ . '/GitHubReposStatuses.php');
+require_once(__DIR__ . '/../objects/GitHubSimpleRepo.php');
+require_once(__DIR__ . '/../objects/GitHubFullRepo.php');
+require_once(__DIR__ . '/../objects/GitHubContributor.php');
+require_once(__DIR__ . '/../objects/GitHubTeam.php');
+require_once(__DIR__ . '/../objects/GitHubTag.php');
+require_once(__DIR__ . '/../objects/GitHubBranches.php');
+require_once(__DIR__ . '/../objects/GitHubBranch.php');
 	
 
 class GitHubRepos extends GitHubService
@@ -96,6 +104,18 @@ class GitHubRepos extends GitHubService
 	/**
 	 * List your repositories
 	 * 
+	 * @return array<GitHubSimpleRepo>
+	 */
+	public function listYourRepositories()
+	{
+		$data = array();
+		
+		return $this->client->request("/repositories", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+	}
+	
+	/**
+	 * Create
+	 * 
 	 * @param $private boolean (Optional) - `true` makes the repository private, and
 	 * 	`false` makes it public.
 	 * @param $has_issues boolean (Optional) - `true` to enable issues for this repository,
@@ -105,8 +125,9 @@ class GitHubRepos extends GitHubService
 	 * @param $has_downloads boolean (Optional) - `true` to enable downloads for this
 	 * 	repository, `false` to disable them. Default is `true`.
 	 * @param $default_branch String (Optional) - Update the default branch for this repository.
+	 * @return GitHubFullRepo
 	 */
-	public function listYourRepositories($owner, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null)
+	public function create($owner, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null)
 	{
 		$data = array();
 		if(!is_null($private))
@@ -120,22 +141,78 @@ class GitHubRepos extends GitHubService
 		if(!is_null($default_branch))
 			$data['default_branch'] = $default_branch;
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo]");
+		return $this->client->request("/repos/$owner/$repo", 'PATCH', $data, 200, 'GitHubFullRepo');
 	}
 	
 	/**
 	 * List contributors
 	 * 
+	 * @return array<GitHubContributor>
 	 */
 	public function listContributors($owner, $repo)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo]");
+		return $this->client->request("/repos/$owner/$repo/contributors", 'GET', $data, 200, 'GitHubContributor', true);
+	}
+	
+	/**
+	 * List languages
+	 * 
+	 * @return array<GitHubTeam>
+	 */
+	public function listLanguages($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/teams", 'GET', $data, 200, 'GitHubTeam', true);
+	}
+	
+	/**
+	 * List Tags
+	 * 
+	 * @return array<GitHubTag>
+	 */
+	public function listTags($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/tags", 'GET', $data, 200, 'GitHubTag', true);
+	}
+	
+	/**
+	 * List Branches
+	 * 
+	 * @return array<GitHubBranches>
+	 */
+	public function listBranches($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/branches", 'GET', $data, 200, 'GitHubBranches', true);
+	}
+	
+	/**
+	 * Get Branch
+	 * 
+	 * @return array<GitHubBranch>
+	 */
+	public function getBranch($owner, $repo, $branch)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/branches/$branch", 'GET', $data, 200, 'GitHubBranch', true);
+	}
+	
+	/**
+	 * Delete a Repository
+	 * 
+	 */
+	public function deleteRepository($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo", 'DELETE', $data, 204, '');
 	}
 	
 }

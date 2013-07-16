@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubFullUser.php');
+require_once(__DIR__ . '/GitHubFullUser.php');
 
 	
 
@@ -11,7 +11,13 @@ class GitHubPrivateUser extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'total_private_repos' => 'int',
+			'owned_private_repos' => 'int',
+			'private_gists' => 'int',
+			'disk_usage' => 'int',
+			'collaborators' => 'int',
+		));
 	}
 	
 	/**

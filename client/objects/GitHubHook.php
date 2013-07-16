@@ -11,7 +11,13 @@ class GitHubHook extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'updated_at' => 'string',
+			'created_at' => 'string',
+			'name' => 'string',
+			'active' => 'boolean',
+		));
 	}
 	
 	/**
@@ -35,19 +41,9 @@ class GitHubHook extends GitHubObject
 	protected $name;
 
 	/**
-	 * @var string
-	 */
-	protected $events;
-
-	/**
 	 * @var boolean
 	 */
 	protected $active;
-
-	/**
-	 * @var int
-	 */
-	protected $id;
 
 	/**
 	 * @return string
@@ -82,27 +78,11 @@ class GitHubHook extends GitHubObject
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getEvents()
-	{
-		return $this->events;
-	}
-
-	/**
 	 * @return boolean
 	 */
 	public function getActive()
 	{
 		return $this->active;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
 	}
 
 }

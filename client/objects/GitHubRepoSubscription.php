@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubSubscription.php');
+require_once(__DIR__ . '/GitHubSubscription.php');
 
 	
 
@@ -11,7 +11,10 @@ class GitHubRepoSubscription extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'repository_url' => 'string',
+		));
 	}
 	
 	/**

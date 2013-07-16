@@ -16,7 +16,14 @@ class GitHubFeedsLinks extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'timeline' => 'GitHubFeedsLinksTimeline',
+			'user' => 'GitHubFeedsLinksUser',
+			'current_user_public' => 'GitHubFeedsLinksCurrentUserPublic',
+			'current_user' => 'GitHubFeedsLinksCurrentUser',
+			'current_user_actor' => 'GitHubFeedsLinksCurrentUserActor',
+			'current_user_organization' => 'GitHubFeedsLinksCurrentUserOrganization',
+		));
 	}
 	
 	/**

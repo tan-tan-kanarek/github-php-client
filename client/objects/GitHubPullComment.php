@@ -1,7 +1,8 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubUser.php');
+require_once(__DIR__ . '/GitHubPullCommentLinks.php');
 	
 
 class GitHubPullComment extends GitHubObject
@@ -11,7 +12,18 @@ class GitHubPullComment extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'id' => 'int',
+			'body' => 'string',
+			'path' => 'string',
+			'position' => 'int',
+			'commit_id' => 'string',
+			'user' => 'GitHubUser',
+			'created_at' => 'string',
+			'updated_at' => 'string',
+			'links' => 'GitHubPullCommentLinks',
+		));
 	}
 	
 	/**
@@ -45,7 +57,7 @@ class GitHubPullComment extends GitHubObject
 	protected $commit_id;
 
 	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $user;
 
@@ -58,6 +70,11 @@ class GitHubPullComment extends GitHubObject
 	 * @var string
 	 */
 	protected $updated_at;
+
+	/**
+	 * @var GitHubPullCommentLinks
+	 */
+	protected $links;
 
 	/**
 	 * @return string
@@ -108,7 +125,7 @@ class GitHubPullComment extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getUser()
 	{
@@ -129,6 +146,14 @@ class GitHubPullComment extends GitHubObject
 	public function getUpdatedAt()
 	{
 		return $this->updated_at;
+	}
+
+	/**
+	 * @return GitHubPullCommentLinks
+	 */
+	public function getLinks()
+	{
+		return $this->links;
 	}
 
 }

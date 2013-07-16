@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubMilestone.php');
 	
 
@@ -16,11 +17,7 @@ class GitHubIssuesMilestones extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/milestones/$number", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/milestones/$number]");
-		
-		return new GitHubMilestone($response);
+		return $this->client->request("/repos/$owner/$repo/milestones/$number", 'GET', $data, 200, 'GitHubMilestone');
 	}
 	
 	/**
@@ -38,11 +35,7 @@ class GitHubIssuesMilestones extends GitHubService
 		if(!is_null($due_on))
 			$data['due_on'] = $due_on;
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/milestones/$number", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/milestones/$number]");
-		
-		return new GitHubMilestone($response);
+		return $this->client->request("/repos/$owner/$repo/milestones/$number", 'PATCH', $data, 200, 'GitHubMilestone');
 	}
 	
 	/**
@@ -53,9 +46,7 @@ class GitHubIssuesMilestones extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/milestones/$number", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/milestones/$number]");
+		return $this->client->request("/repos/$owner/$repo/milestones/$number", 'DELETE', $data, 204, '');
 	}
 	
 }

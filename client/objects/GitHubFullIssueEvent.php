@@ -1,7 +1,9 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubIssueEvent.php');
-
+require_once(__DIR__ . '/GitHubIssueEvent.php');
+require_once(__DIR__ . '/GitHubUser.php');
+require_once(__DIR__ . '/GitHubMilestone.php');
+require_once(__DIR__ . '/GitHubIssuePullRequest.php');
 	
 
 class GitHubFullIssueEvent extends GitHubObject
@@ -11,7 +13,22 @@ class GitHubFullIssueEvent extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'html_url' => 'string',
+			'number' => 'int',
+			'state' => 'string',
+			'title' => 'string',
+			'body' => 'string',
+			'user' => 'GitHubUser',
+			'assignee' => 'GitHubUser',
+			'milestone' => 'GitHubMilestone',
+			'comments' => 'int',
+			'closed_at' => 'string',
+			'created_at' => 'string',
+			'updated_at' => 'string',
+			'pull_request' => 'GitHubIssuePullRequest',
+		));
 	}
 	
 	/**
@@ -45,22 +62,17 @@ class GitHubFullIssueEvent extends GitHubObject
 	protected $body;
 
 	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $user;
 
 	/**
-	 * @var string
-	 */
-	protected $labels;
-
-	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $assignee;
 
 	/**
-	 * @var string
+	 * @var GitHubMilestone
 	 */
 	protected $milestone;
 
@@ -83,6 +95,11 @@ class GitHubFullIssueEvent extends GitHubObject
 	 * @var string
 	 */
 	protected $updated_at;
+
+	/**
+	 * @var GitHubIssuePullRequest
+	 */
+	protected $pull_request;
 
 	/**
 	 * @return string
@@ -133,7 +150,7 @@ class GitHubFullIssueEvent extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getUser()
 	{
@@ -141,15 +158,7 @@ class GitHubFullIssueEvent extends GitHubObject
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getLabels()
-	{
-		return $this->labels;
-	}
-
-	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getAssignee()
 	{
@@ -157,7 +166,7 @@ class GitHubFullIssueEvent extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubMilestone
 	 */
 	public function getMilestone()
 	{
@@ -194,6 +203,14 @@ class GitHubFullIssueEvent extends GitHubObject
 	public function getUpdatedAt()
 	{
 		return $this->updated_at;
+	}
+
+	/**
+	 * @return GitHubIssuePullRequest
+	 */
+	public function getPullRequest()
+	{
+		return $this->pull_request;
 	}
 
 }

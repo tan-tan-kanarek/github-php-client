@@ -11,7 +11,8 @@ class GitHubGistForksForks extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+		));
 	}
 	
 }

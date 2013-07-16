@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubTree.php');
 require_once(__DIR__ . '/../objects/GitHubTreeExtra.php');
 	
@@ -17,11 +18,7 @@ class GitHubGitTrees extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/git/trees/$sha", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/git/trees/$sha]");
-		
-		return new GitHubTree($response);
+		return $this->client->request("/repos/$owner/$repo/git/trees/$sha", 'GET', $data, 200, 'GitHubTree');
 	}
 	
 	/**
@@ -33,11 +30,7 @@ class GitHubGitTrees extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/git/trees/$sha?recursive=1", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/git/trees/$sha?recursive=1]");
-		
-		return new GitHubTreeExtra($response);
+		return $this->client->request("/repos/$owner/$repo/git/trees/$sha?recursive=1", 'GET', $data, 200, 'GitHubTreeExtra');
 	}
 	
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubGittag.php');
 	
 
@@ -16,11 +17,7 @@ class GitHubGitTags extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/git/tags/$sha", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/git/tags/$sha]");
-		
-		return new GitHubGittag($response);
+		return $this->client->request("/repos/$owner/$repo/git/tags/$sha", 'GET', $data, 200, 'GitHubGittag');
 	}
 	
 }

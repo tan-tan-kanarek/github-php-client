@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubSimplePublicKey.php');
+require_once(__DIR__ . '/GitHubSimplePublicKey.php');
 
 	
 
@@ -11,7 +11,10 @@ class GitHubPublicKey extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'title' => 'string',
+		));
 	}
 	
 	/**

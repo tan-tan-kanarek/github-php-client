@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubUser.php');
 	
 
 class GitHubMilestone extends GitHubObject
@@ -11,7 +11,18 @@ class GitHubMilestone extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'number' => 'int',
+			'state' => 'string',
+			'title' => 'string',
+			'description' => 'string',
+			'creator' => 'GitHubUser',
+			'open_issues' => 'int',
+			'closed_issues' => 'int',
+			'created_at' => 'string',
+			'due_on' => 'string',
+		));
 	}
 	
 	/**
@@ -40,7 +51,7 @@ class GitHubMilestone extends GitHubObject
 	protected $description;
 
 	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $creator;
 
@@ -105,7 +116,7 @@ class GitHubMilestone extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getCreator()
 	{

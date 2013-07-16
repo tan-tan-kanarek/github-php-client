@@ -11,7 +11,10 @@ class GitHubTreeExtra extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'sha' => 'string',
+			'url' => 'string',
+		));
 	}
 	
 	/**
@@ -23,11 +26,6 @@ class GitHubTreeExtra extends GitHubObject
 	 * @var string
 	 */
 	protected $url;
-
-	/**
-	 * @var string
-	 */
-	protected $tree;
 
 	/**
 	 * @return string
@@ -43,14 +41,6 @@ class GitHubTreeExtra extends GitHubObject
 	public function getUrl()
 	{
 		return $this->url;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTree()
-	{
-		return $this->tree;
 	}
 
 }

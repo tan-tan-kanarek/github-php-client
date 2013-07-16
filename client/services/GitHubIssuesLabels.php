@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubLabel.php');
 	
 
@@ -10,17 +11,25 @@ class GitHubIssuesLabels extends GitHubService
 	/**
 	 * List all labels for this repository
 	 * 
-	 * @return GitHubLabel
+	 * @return array<GitHubLabel>
 	 */
-	public function listAllLabelsForThisRepository($owner, $repo, $name)
+	public function listAllLabelsForThisRepository($owner, $repo)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/labels/$name", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/labels/$name]");
+		return $this->client->request("/repos/$owner/$repo/labels", 'GET', $data, 200, 'GitHubLabel', true);
+	}
+	
+	/**
+	 * Get a single label
+	 * 
+	 * @return GitHubLabel
+	 */
+	public function getSingleLabel($owner, $repo, $name)
+	{
+		$data = array();
 		
-		return new GitHubLabel($response);
+		return $this->client->request("/repos/$owner/$repo/labels/$name", 'GET', $data, 200, 'GitHubLabel');
 	}
 	
 	/**
@@ -31,35 +40,53 @@ class GitHubIssuesLabels extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/labels/$name", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/labels/$name]");
+		return $this->client->request("/repos/$owner/$repo/labels/$name", 'DELETE', $data, 204, '');
 	}
 	
 	/**
 	 * List labels on an issue
 	 * 
+	 * @return array<GitHubLabel>
 	 */
-	public function listLabelsOnAnIssue($owner, $repo, $number, $name)
+	public function listLabelsOnAnIssue($owner, $repo, $number)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/issues/$number/labels/$name", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/issues/$number/labels/$name]");
+		return $this->client->request("/repos/$owner/$repo/issues/$number/labels", 'GET', $data, 200, 'GitHubLabel', true);
+	}
+	
+	/**
+	 * Add labels to an issue
+	 * 
+	 */
+	public function addLabelsToAnIssue($owner, $repo, $number, $name)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/issues/$number/labels/$name", 'DELETE', $data, 204, '');
 	}
 	
 	/**
 	 * Replace all labels for an issue
 	 * 
+	 * @return array<GitHubLabel>
 	 */
 	public function replaceAllLabelsForAnIssue($owner, $repo, $number)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/issues/$number/labels", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/issues/$number/labels]");
+		return $this->client->request("/repos/$owner/$repo/issues/$number/labels", 'PUT', $data, 200, 'GitHubLabel', true);
+	}
+	
+	/**
+	 * Remove all labels from an issue
+	 * 
+	 */
+	public function removeAllLabelsFromAnIssue($owner, $repo, $number)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/issues/$number/labels", 'DELETE', $data, 204, '');
 	}
 	
 }

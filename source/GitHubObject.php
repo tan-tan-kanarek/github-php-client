@@ -1,7 +1,19 @@
 <?php
 
-abstract class GitHubObject
+class GitHubObject
 {
+	/**
+	 * @param array $json
+	 */
+	public static function fromArray(array $json, $type)
+	{
+		$array = array();
+		foreach($json as $jsonObject)
+			$array[] = new $type($jsonObject);
+			
+		return $array;
+	}
+	
 	/**
 	 * @param stdClass $json
 	 */
@@ -17,7 +29,7 @@ abstract class GitHubObject
 			switch ($attributeType)
 			{
 				case 'string':
-					$this->$attributeName = strval($json->$attributeName);
+					$this->$attributeName = $json->$attributeName;
 					break;
 					
 				case 'int':
@@ -33,14 +45,15 @@ abstract class GitHubObject
 					if(preg_match('/^array<([^>]+)>$/', $attributeType, $matches))
 					{
 						$attributeType = $matches[1];
-						$this->$attributeName = array();
+						$array = array();
 						if(is_array($json->$attributeName))
 						{
 							foreach($json->$attributeName as $value)
 							{
-								$this->$attributeName[] = new $attributeType($value);
+								$array[] = new $attributeType($value);
 							}
 						}
+						$this->$attributeName = $array;
 					}
 					else
 					{
@@ -57,5 +70,8 @@ abstract class GitHubObject
 	/**
 	 * @return array
 	 */
-	abstract protected function getAttributes();
+	protected function getAttributes()
+	{
+		return array();
+	}
 }

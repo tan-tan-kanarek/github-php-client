@@ -1,7 +1,9 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubOauthAccess.php');
+require_once(__DIR__ . '/../objects/GitHubOauthAccessWithUser.php');
 	
 
 class GitHubOauth extends GitHubService
@@ -16,11 +18,7 @@ class GitHubOauth extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/authorizations/$id", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/authorizations/$id]");
-		
-		return new GitHubOauthAccess($response);
+		return $this->client->request("/authorizations/$id", 'GET', $data, 200, 'GitHubOauthAccess');
 	}
 	
 	/**
@@ -32,6 +30,7 @@ class GitHubOauth extends GitHubService
 	 * 	authorization.
 	 * @param $note string (Optional) - A note to remind you what the OAuth token is for.
 	 * @param $note_url string (Optional) - A URL to remind you what app the OAuth token is for.
+	 * @return GitHubOauthAccess
 	 */
 	public function createNewAuthorization($id, $scopes = null, $add_scopes = null, $remove_scopes = null, $note = null, $note_url = null)
 	{
@@ -47,9 +46,7 @@ class GitHubOauth extends GitHubService
 		if(!is_null($note_url))
 			$data['note_url'] = $note_url;
 		
-		list($httpCode, $response) = $this->request("/authorizations/$id", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/authorizations/$id]");
+		return $this->client->request("/authorizations/$id", 'PATCH', $data, 200, 'GitHubOauthAccess');
 	}
 	
 	/**
@@ -60,9 +57,19 @@ class GitHubOauth extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/authorizations/$id", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/authorizations/$id]");
+		return $this->client->request("/authorizations/$id", 'DELETE', $data, 204, '');
+	}
+	
+	/**
+	 * Check an authorization
+	 * 
+	 * @return array<GitHubOauthAccessWithUser>
+	 */
+	public function checkAnAuthorization($client_id, $access_token)
+	{
+		$data = array();
+		
+		return $this->client->request("/applications/$client_id/tokens/$access_token", 'GET', $data, 200, 'GitHubOauthAccessWithUser', true);
 	}
 	
 }

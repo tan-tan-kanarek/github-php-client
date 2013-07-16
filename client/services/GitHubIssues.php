@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/GitHubIssuesAssignees.php');
 require_once(__DIR__ . '/GitHubIssuesComments.php');
 require_once(__DIR__ . '/GitHubIssuesEvents.php');
@@ -61,11 +62,7 @@ class GitHubIssues extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/issues/$number", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/issues/$number]");
-		
-		return new GitHubIssue($response);
+		return $this->client->request("/repos/$owner/$repo/issues/$number", 'GET', $data, 200, 'GitHubIssue');
 	}
 	
 	/**
@@ -78,6 +75,7 @@ class GitHubIssues extends GitHubService
 	 * @param $labels array (Optional) of **strings** - Labels to associate with this
 	 * 	issue. Pass one or more Labels to _replace_ the set of Labels on this
 	 * 	Issue. Send an empty array (`[]`) to clear all Labels from the Issue.
+	 * @return GitHubIssue
 	 */
 	public function createAnIssue($owner, $repo, $number, $assignee = null, $state = null, $milestone = null, $labels = null)
 	{
@@ -91,9 +89,7 @@ class GitHubIssues extends GitHubService
 		if(!is_null($labels))
 			$data['labels'] = $labels;
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/issues/$number]");
+		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data, 200, 'GitHubIssue');
 	}
 	
 }

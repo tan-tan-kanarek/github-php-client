@@ -108,8 +108,6 @@ class GitHubClient extends GitHubClientBase
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-		
 		$this->activity = new GitHubActivity($this);
 		$this->changelog = new GitHubChangelog($this);
 		$this->gists = new GitHubGists($this);

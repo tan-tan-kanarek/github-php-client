@@ -1,7 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubPull.php');
-
+require_once(__DIR__ . '/GitHubPull.php');
+require_once(__DIR__ . '/GitHubUser.php');
 	
 
 class GitHubFullPull extends GitHubObject
@@ -11,7 +11,16 @@ class GitHubFullPull extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'merge_commit_sha' => 'string',
+			'merged' => 'boolean',
+			'mergeable' => 'boolean',
+			'merged_by' => 'GitHubUser',
+			'comments' => 'int',
+			'commits' => 'int',
+			'additions' => 'int',
+			'deletions' => 'int',
+		));
 	}
 	
 	/**
@@ -30,7 +39,7 @@ class GitHubFullPull extends GitHubObject
 	protected $mergeable;
 
 	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $merged_by;
 
@@ -53,11 +62,6 @@ class GitHubFullPull extends GitHubObject
 	 * @var int
 	 */
 	protected $deletions;
-
-	/**
-	 * @var int
-	 */
-	protected $changed_files;
 
 	/**
 	 * @return string
@@ -84,7 +88,7 @@ class GitHubFullPull extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getMergedBy()
 	{
@@ -121,14 +125,6 @@ class GitHubFullPull extends GitHubObject
 	public function getDeletions()
 	{
 		return $this->deletions;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getChangedFiles()
-	{
-		return $this->changed_files;
 	}
 
 }

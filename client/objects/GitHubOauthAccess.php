@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubOauthAccessApp.php');
 	
 
 class GitHubOauthAccess extends GitHubObject
@@ -11,7 +11,16 @@ class GitHubOauthAccess extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'id' => 'int',
+			'url' => 'string',
+			'token' => 'string',
+			'note' => 'string',
+			'note_url' => 'string',
+			'updated_at' => 'string',
+			'created_at' => 'string',
+			'app' => 'GitHubOauthAccessApp',
+		));
 	}
 	
 	/**
@@ -23,11 +32,6 @@ class GitHubOauthAccess extends GitHubObject
 	 * @var string
 	 */
 	protected $url;
-
-	/**
-	 * @var string
-	 */
-	protected $scopes;
 
 	/**
 	 * @var string
@@ -55,6 +59,11 @@ class GitHubOauthAccess extends GitHubObject
 	protected $created_at;
 
 	/**
+	 * @var GitHubOauthAccessApp
+	 */
+	protected $app;
+
+	/**
 	 * @return int
 	 */
 	public function getId()
@@ -68,14 +77,6 @@ class GitHubOauthAccess extends GitHubObject
 	public function getUrl()
 	{
 		return $this->url;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getScopes()
-	{
-		return $this->scopes;
 	}
 
 	/**
@@ -116,6 +117,14 @@ class GitHubOauthAccess extends GitHubObject
 	public function getCreatedAt()
 	{
 		return $this->created_at;
+	}
+
+	/**
+	 * @return GitHubOauthAccessApp
+	 */
+	public function getApp()
+	{
+		return $this->app;
 	}
 
 }

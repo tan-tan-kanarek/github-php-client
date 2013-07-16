@@ -11,7 +11,11 @@ class GitHubLabel extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'url' => 'string',
+			'name' => 'string',
+			'color' => 'string',
+		));
 	}
 	
 	/**

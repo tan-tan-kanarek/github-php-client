@@ -11,7 +11,14 @@ class GitHubSubscription extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'subscribed' => 'boolean',
+			'ignored' => 'boolean',
+			'reason' => 'string',
+			'created_at' => 'string',
+			'url' => 'string',
+			'thread_url' => 'string',
+		));
 	}
 	
 	/**

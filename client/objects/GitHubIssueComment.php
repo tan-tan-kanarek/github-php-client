@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubUser.php');
 	
 
 class GitHubIssueComment extends GitHubObject
@@ -11,7 +11,15 @@ class GitHubIssueComment extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'id' => 'int',
+			'url' => 'string',
+			'html_url' => 'string',
+			'body' => 'string',
+			'user' => 'GitHubUser',
+			'created_at' => 'string',
+			'updated_at' => 'string',
+		));
 	}
 	
 	/**
@@ -35,7 +43,7 @@ class GitHubIssueComment extends GitHubObject
 	protected $body;
 
 	/**
-	 * @var string
+	 * @var GitHubUser
 	 */
 	protected $user;
 
@@ -82,7 +90,7 @@ class GitHubIssueComment extends GitHubObject
 	}
 
 	/**
-	 * @return string
+	 * @return GitHubUser
 	 */
 	public function getUser()
 	{

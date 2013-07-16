@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubRepoSubscription.php');
 	
 
@@ -16,11 +17,7 @@ class GitHubActivityWatching extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/subscription", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/subscription]");
-		
-		return new GitHubRepoSubscription($response);
+		return $this->client->request("/repos/$owner/$repo/subscription", 'GET', $data, 200, 'GitHubRepoSubscription');
 	}
 	
 	/**
@@ -32,11 +29,7 @@ class GitHubActivityWatching extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/subscription", 'PUT', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/subscription]");
-		
-		return new GitHubRepoSubscription($response);
+		return $this->client->request("/repos/$owner/$repo/subscription", 'PUT', $data, 200, 'GitHubRepoSubscription');
 	}
 	
 	/**
@@ -47,9 +40,7 @@ class GitHubActivityWatching extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/subscription", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/subscription]");
+		return $this->client->request("/repos/$owner/$repo/subscription", 'DELETE', $data, 204, '');
 	}
 	
 	/**
@@ -60,9 +51,7 @@ class GitHubActivityWatching extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/user/subscriptions/$owner/$repo", 'PUT', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/user/subscriptions/$owner/$repo]");
+		return $this->client->request("/user/subscriptions/$owner/$repo", 'PUT', $data, 204, '');
 	}
 	
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubCommitComment.php');
 	
 
@@ -10,17 +11,37 @@ class GitHubReposComments extends GitHubService
 	/**
 	 * List commit comments for a repository
 	 * 
-	 * @return GitHubCommitComment
+	 * @return array<GitHubCommitComment>
 	 */
-	public function listCommitCommentsForRepository($owner, $repo, $id)
+	public function listCommitCommentsForRepository($owner, $repo)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/comments/$id", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/repos/$owner/$repo/comments/$id]");
+		return $this->client->request("/repos/$owner/$repo/comments", 'GET', $data, 200, 'GitHubCommitComment', true);
+	}
+	
+	/**
+	 * List comments for a single commit
+	 * 
+	 * @return array<GitHubCommitComment>
+	 */
+	public function listCommentsForSingleCommit($owner, $repo, $sha)
+	{
+		$data = array();
 		
-		return new GitHubCommitComment($response);
+		return $this->client->request("/repos/$owner/$repo/commits/$sha/comments", 'GET', $data, 200, 'GitHubCommitComment', true);
+	}
+	
+	/**
+	 * Create a commit comment
+	 * 
+	 * @return GitHubCommitComment
+	 */
+	public function createCommitComment($owner, $repo, $id)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/comments/$id", 'GET', $data, 200, 'GitHubCommitComment');
 	}
 	
 	/**
@@ -31,9 +52,7 @@ class GitHubReposComments extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/repos/$owner/$repo/comments/$id", 'DELETE', $data);
-		if($httpCode !== 204)
-			throw new GithubClientException("Expected status [204], actual status [$httpCode], URL [/repos/$owner/$repo/comments/$id]");
+		return $this->client->request("/repos/$owner/$repo/comments/$id", 'DELETE', $data, 204, '');
 	}
 	
 }

@@ -1,6 +1,8 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
+require_once(__DIR__ . '/../objects/GitHubSimplePublicKey.php');
 require_once(__DIR__ . '/../objects/GitHubPublicKey.php');
 	
 
@@ -10,17 +12,37 @@ class GitHubUsersKeys extends GitHubService
 	/**
 	 * List public keys for a user
 	 * 
-	 * @return GitHubPublicKey
+	 * @return array<GitHubSimplePublicKey>
 	 */
-	public function listPublicKeysForUser($id)
+	public function listPublicKeysForUser($user)
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/user/keys/$id", 'GET', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/user/keys/$id]");
+		return $this->client->request("/users/$user/keys", 'GET', $data, 200, 'GitHubSimplePublicKey', true);
+	}
+	
+	/**
+	 * List your public keys
+	 * 
+	 * @return array<GitHubPublicKey>
+	 */
+	public function listYourPublicKeys()
+	{
+		$data = array();
 		
-		return new GitHubPublicKey($response);
+		return $this->client->request("/user/keys", 'GET', $data, 200, 'GitHubPublicKey', true);
+	}
+	
+	/**
+	 * Get a single public key
+	 * 
+	 * @return GitHubPublicKey
+	 */
+	public function getSinglePublicKey($id)
+	{
+		$data = array();
+		
+		return $this->client->request("/user/keys/$id", 'GET', $data, 200, 'GitHubPublicKey');
 	}
 	
 	/**
@@ -32,11 +54,7 @@ class GitHubUsersKeys extends GitHubService
 	{
 		$data = array();
 		
-		list($httpCode, $response) = $this->request("/user/keys/$id", 'PATCH', $data);
-		if($httpCode !== 200)
-			throw new GithubClientException("Expected status [200], actual status [$httpCode], URL [/user/keys/$id]");
-		
-		return new GitHubPublicKey($response);
+		return $this->client->request("/user/keys/$id", 'PATCH', $data, 200, 'GitHubPublicKey');
 	}
 	
 }

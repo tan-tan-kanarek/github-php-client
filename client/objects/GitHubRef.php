@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
-
+require_once(__DIR__ . '/GitHubRefObject.php');
 	
 
 class GitHubRef extends GitHubObject
@@ -11,7 +11,11 @@ class GitHubRef extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(
+			'ref' => 'string',
+			'url' => 'string',
+			'object' => 'GitHubRefObject',
+		));
 	}
 	
 	/**
@@ -23,6 +27,11 @@ class GitHubRef extends GitHubObject
 	 * @var string
 	 */
 	protected $url;
+
+	/**
+	 * @var GitHubRefObject
+	 */
+	protected $object;
 
 	/**
 	 * @return string
@@ -38,6 +47,14 @@ class GitHubRef extends GitHubObject
 	public function getUrl()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @return GitHubRefObject
+	 */
+	public function getObject()
+	{
+		return $this->object;
 	}
 
 }

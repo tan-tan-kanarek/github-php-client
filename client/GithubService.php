@@ -6,7 +6,7 @@ class GitHubService
 	/**
 	 * @var GitHubClient
 	 */
-	private $client;
+	protected $client;
 	
 	/**
 	 * @param GitHubClient $client
@@ -14,10 +14,5 @@ class GitHubService
 	public function __construct(GitHubClient $client)
 	{
 		$this->client = $client;
-	}
-	
-	protected function request($url, $method, array $data)
-	{
-		return $this->client->request($url, $method, $data);
 	}
 }
