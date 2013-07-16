@@ -86,9 +86,7 @@ class GitHubClient extends GitHubClientBase
 	 * Initialize sub services
 	 */
 	public function __construct()
-	{
-		parent::__construct();
-		";
+	{";
 		
 	foreach($classTree['/'] as $file => $className)
 	{
@@ -133,8 +131,8 @@ List all notifications for the current user, grouped by repository.
     GET /notifications
 ';
 	
-	preg_match_all('/## ([^\n]+)\n\n(.*)(\n\n)?    (GET|PUT|PATCH|DELETE) ([^\n]+)\n\n(### (Parameters|Input)\n\n([^#]+))?### Response\n\n<%= headers (\d+) %>(\n<%= json :([^\s]+) %>)?\n\n/sU', $content, $matches);
-	
+	preg_match_all('/## ([^\n]+)\n\n(.*)(\n\n)?    (GET|PUT|PATCH|DELETE) ([^\n]+)\n\n(([^\n]+\n)+\n)?(### (Parameters|Input)\n\n([^#]+))?### Response\n(\n<%= headers (\d+) %>)?(\n<%= json( :([^\s]+) |\(:([^\)]+)\) [^%]*)%>)?\n\n/sU', $content, $matches);
+
 	$class = "
 class GitHub$name extends GitHubService
 {
@@ -186,20 +184,20 @@ class GitHub$name extends GitHubService
 		$url = str_replace(':', '$', $matches[5][$index]);
 		$arguments = array();
 		$dataArguments = array();
-		if(preg_match_all('/\/(\$[^\/?]+)/', $url, $argumentsMatches))
+		if(preg_match_all('/(\$[^\/?.]+)/', $url, $argumentsMatches))
 			$arguments = $argumentsMatches[1];
 		
-		$paremetersDescription = $matches[8][$index];
+		$paremetersDescription = $matches[10][$index];
 		$docCommentParameters = array();
 		$paremetersMatches = null;
 		if($paremetersDescription && preg_match_all('/([^\n]+)\n: _([^_]+)_ \*\*([^\*]+)\*\* (.+)\n\n/sU', $paremetersDescription, $paremetersMatches))
 		{
-			foreach($paremetersMatches[1] as $index => $parameterName)
+			foreach($paremetersMatches[1] as $parameterIndex => $parameterName)
 			{
 				$parameterName = preg_replace('/[^\w]/', '', $parameterName);
-				$parameterRequirement = $paremetersMatches[2][$index];
-				$parameterType = $paremetersMatches[3][$index];
-				$parameterDescription = $paremetersMatches[4][$index];
+				$parameterRequirement = $paremetersMatches[2][$parameterIndex];
+				$parameterType = $paremetersMatches[3][$parameterIndex];
+				$parameterDescription = $paremetersMatches[4][$parameterIndex];
 				$parameterDescription = implode("\n	 * \t", explode("\n", $parameterDescription));
 				$docCommentParameters[] = "\$$parameterName $parameterType ($parameterRequirement) $parameterDescription";
 				$argument = "\$$parameterName";
@@ -212,8 +210,8 @@ class GitHub$name extends GitHubService
 		}
 		
 		$expectedStatus = 200;
-		if(isset($matches[9][$index]))
-			$expectedStatus = $matches[9][$index];
+		if(isset($matches[12][$index]) && is_numeric($matches[12][$index]))
+			$expectedStatus = $matches[12][$index];
 		
 		$arguments = implode(', ', $arguments);
 		$class .= "
@@ -229,17 +227,34 @@ class GitHub$name extends GitHubService
 						
 		$responseType = null;
 		$returnType = null;
+		$returnArray = false;
 		
-		if(isset($matches[11][$index]))
-			$responseType = $matches[11][$index];
-			
+		if(isset($matches[15][$index]) && strlen($matches[15][$index]))
+		{
+			$responseType = $matches[15][$index];
+		}
+		elseif(isset($matches[16][$index]) && strlen($matches[16][$index]))
+		{
+			$responseType = $matches[16][$index];
+			$returnArray = true;
+		}
+	
 		if($responseType)
 		{
-			$objects[] = $responseType;
+			$objects[strtolower($responseType)] = true;
 			$returnType = gitHubClassName($responseType);
 			$requires[$returnType] = "require_once(__DIR__ . '/../objects/$returnType.php');";
-			$class .= "
+			
+			if($returnArray)
+			{
+				$class .= "
+	 * @return array<$returnType>";
+			}
+			else 
+			{
+				$class .= "
 	 * @return $returnType";
+			}
 		}
 	 
 		$class .= "
@@ -257,18 +272,7 @@ class GitHub$name extends GitHubService
 		
 		$class .= "
 		
-		list(\$httpCode, \$response) = \$this->request(\"$url\", '$httpMethod', \$data);
-		if(\$httpCode !== $expectedStatus)
-			throw new GithubClientException(\"Expected status [$expectedStatus], actual status [\$httpCode], URL [$url]\");";
-		
-		if($returnType)
-		{
-			$class .= "
-		
-		return new $returnType(\$response);";
-		}
-		
-		$class .= "
+		return \$this->client->request(\"$url\", '$httpMethod', \$data, $expectedStatus, '$returnType'" . ($returnArray ? ', true' : '') . ");
 	}
 	";
 	}
@@ -281,6 +285,7 @@ class GitHub$name extends GitHubService
 	$php = "<?php
 
 require_once(__DIR__ . '/../GitHubClient.php');
+require_once(__DIR__ . '/../GitHubService.php');
 $requires
 	
 $class
@@ -310,14 +315,24 @@ class $className extends GitHubObject
 	 */
 	protected function getAttributes()
 	{
-		
+		return array_merge(parent::getAttributes(), array(";
+
+	foreach($attributes as $attributeName => $attributeType)
+	{
+		$class .= "
+			'$attributeName' => '$attributeType',";
+	}
+	
+	$class .= "
+		));
 	}
 	";
 	
 	foreach($attributes as $attributeName => $attributeType)
 	{
-		if(preg_match('/^GitHub/', $attributeType))
-			$requires[$attributeType] = "require_once(__DIR__ . '/$attributeType.php');";
+		$matches = null;
+		if(preg_match('/^(GitHub.+)$/', $attributeType, $matches) || preg_match('/^array<(GitHub.+)>$/', $attributeType, $matches))
+			$requires[$attributeType] = "require_once(__DIR__ . '/" . $matches[1] . ".php');";
 			
 		$class .= "
 	/**
@@ -349,10 +364,13 @@ class $className extends GitHubObject
 }
 ";
 	
+	if($extends == 'GitHubObject')
+		$extends = '../GitHubObject';
+		
 	$requires = implode("\n", $requires);
 	$php = "<?php
 
-require_once(__DIR__ . '/../$extends.php');
+require_once(__DIR__ . '/$extends.php');
 $requires
 	
 $class
@@ -368,10 +386,12 @@ function gitHubClassName($baseName)
 
 function parseAttributes($resourceName, $resource, $indent = '      ')
 {
+	global $objects;
+	
 	$attributes = array();
 	
 	$matches = null;
-	if(preg_match_all('/\n' . $indent . '[:"]([\w_]+)"? +=> +(.+),?/', $resource, $matches))
+	if(preg_match_all('/\n' . $indent . '[:"]([\w_]+)"? +=> +([^\{\[].+),?/', $resource, $matches))
 	{
 		foreach($matches[1] as $index => $attributeName)
 		{
@@ -379,17 +399,27 @@ function parseAttributes($resourceName, $resource, $indent = '      ')
 			if($value[0] == '{')
 				continue;
 				
-			$type = 'string';
-			if($value == 'true' || $value == 'false')
-				$type = 'boolean';
+			$attributeType = 'string';
+			if(preg_match('/^[A-Z_]+$/', $value))
+			{
+				$attributeTypeName = preg_replace('/^_/', '', $value);
+				$attributeType = gitHubClassName($attributeTypeName);
+				$objects[strtolower($value)] = true;
+			}
+			elseif($value == 'true' || $value == 'false')
+			{
+				$attributeType = 'boolean';
+			}
 			elseif(preg_match('/^\d+$/', $value))
-				$type = 'int';
+			{
+					$attributeType = 'int';
+			}
 				
-			$attributes[$attributeName] = $type;
+			$attributes[$attributeName] = $attributeType;
 		}
 	}
-	
-	if(preg_match_all('/\n' . $indent . ':([\w_]+) => \{(.+)\n' . $indent . '\}/sU', $resource, $matches))
+
+	if(preg_match_all('/\n' . $indent . '[:"]([\w_]+)"? => \{(.+)\n' . $indent . '\}/sU', $resource, $matches))
 	{
 		foreach($matches[1] as $index => $attributeName)
 		{
@@ -402,7 +432,7 @@ function parseAttributes($resourceName, $resource, $indent = '      ')
 		}
 	}
 	
-	if(preg_match_all('/\n' . $indent . '"([\w_]+)" => \[\s+\{(.+)\n' . $indent . '\]/sU', $resource, $matches))
+	if(preg_match_all('/\n' . $indent . '[:"]([\w_]+)"? => \[ *\{(.+)\n' . $indent . '\}?\]/sU', $resource, $matches))
 	{
 		foreach($matches[1] as $index => $attributeName)
 		{
@@ -420,7 +450,7 @@ function parseAttributes($resourceName, $resource, $indent = '      ')
 
 function getObjectAttributes($resourceName, &$extends, $enableExtend = true)
 {
-	global $resources;
+	global $resources, $objects;
 	
 	$matches = null;
 	if(
@@ -429,16 +459,22 @@ function getObjectAttributes($resourceName, &$extends, $enableExtend = true)
 		!preg_match('/\n    ' . $resourceName . ' = ((\w+))((\.merge\([^\(]+\))+)/', $resources, $matches)
 	)
 	{
-		throw new Exception("Cant find resource for object [$resourceName]");
+		echo "Cant find resource for object [$resourceName]\n";
+		return array();
 	}
 		
 	$attributes = array();
 	if($matches[2])
 	{
 		if($enableExtend)
+		{
+			$objects[strtolower($matches[2])] = true;
 			$extends = gitHubClassName($matches[2]);
+		}
 		else
+		{
 			$attributes = getObjectAttributes($matches[2], $extends, $enableExtend);
+		}
 	}
 		
 	$mergeMatches = null;
@@ -470,7 +506,7 @@ function generateGithubObjects()
 {
 	global $objects;
 	
-	foreach($objects as $object)
+	foreach($objects as $object => $true)
 	{
 		$resourceName = strtoupper($object);
 		$extends = null;
