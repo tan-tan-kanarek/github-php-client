@@ -1,8 +1,8 @@
 ---
-title: GitHub API PHP Client
+GitHub API PHP Client
 ---
 
-# Example
+## Example
 
     <?php
     require_once(__DIR__ . '/client/GitHubClient.php');
