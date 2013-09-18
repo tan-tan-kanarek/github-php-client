@@ -58,7 +58,7 @@ class GitHubObject
 					else
 					{
 						if(!class_exists($attributeType))
-							throw new GithubClientException("Github type [$attributeType] not found", GithubClientException::CLASS_NOT_FOUND);
+							throw new GitHubClientException("Github type [$attributeType] not found", GitHubClientException::CLASS_NOT_FOUND);
 							
 						$this->$attributeName = new $attributeType($json->$attributeName);
 					}
