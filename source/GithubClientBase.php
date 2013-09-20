@@ -68,7 +68,7 @@ abstract class GitHubClientBase
 	public function getLastPage()
 	{
 		if(!isset($this->pageData['last']))
-			throw new GithubClientException("Last page not defined", GithubClientException::PAGE_INVALID);
+			throw new GitHubClientException("Last page not defined", GitHubClientException::PAGE_INVALID);
 			
 		if(isset($this->pageData['last']['page']))
 			$this->page = $this->pageData['last']['page'];
@@ -101,7 +101,7 @@ abstract class GitHubClientBase
 		}
 		
 		if(is_null($this->page))
-			throw new GithubClientException("Page not defined", GithubClientException::PAGE_INVALID);
+			throw new GitHubClientException("Page not defined", GitHubClientException::PAGE_INVALID);
 			
 		$this->page = $this->lastPage + 1;
 		return $this->requestLast($this->lastData);
@@ -118,7 +118,7 @@ abstract class GitHubClientBase
 		}
 		
 		if(is_null($this->page))
-			throw new GithubClientException("Page not defined", GithubClientException::PAGE_INVALID);
+			throw new GitHubClientException("Page not defined", GitHubClientException::PAGE_INVALID);
 			
 		$this->page = $this->lastPage - 1;
 		return $this->requestLast($this->lastData);
@@ -218,13 +218,13 @@ abstract class GitHubClientBase
 			if(!is_numeric($this->page) || $this->page <= 0)
 			{
 				$this->resetPage();
-				throw new GithubClientException("Page must be positive value", GithubClientException::PAGE_INVALID);
+				throw new GitHubClientException("Page must be positive value", GitHubClientException::PAGE_INVALID);
 			}
 				
 			if(!is_numeric($this->pageSize) || $this->pageSize <= 0 || $this->pageSize > 100)
 			{
 				$this->resetPage();
-				throw new GithubClientException("Page size must be positive value, maximum value is 100", GithubClientException::PAGE_SIZE_INVALID);
+				throw new GitHubClientException("Page size must be positive value, maximum value is 100", GitHubClientException::PAGE_SIZE_INVALID);
 			}
 				
 			$data['page'] = $this->page;
@@ -289,7 +289,7 @@ abstract class GitHubClientBase
 		}
 
 		if($status !== $expectedHttpCode)
-			throw new GithubClientException("Expected status [$expectedHttpCode], actual status [$status], URL [$url]", GithubClientException::INVALID_HTTP_CODE);
+			throw new GitHubClientException("Expected status [$expectedHttpCode], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
 		
 		$response = json_decode(implode("\n", $content));
 		if($isArray)
