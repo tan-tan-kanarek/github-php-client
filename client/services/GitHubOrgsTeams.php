@@ -85,6 +85,14 @@ class GitHubOrgsTeams extends GitHubService
 	{
 		$data = array();
 		
+		return $this->client->request("/teams/$id/members/$user", 'GET', $data, 204, '');
+	}
+
+	/**
+	 * Add member in team
+	 */
+	public function addTeamMember($id, $user) {
+		$data = array();
 		return $this->client->request("/teams/$id/members/$user", 'PUT', $data, 204, '');
 	}
 	
