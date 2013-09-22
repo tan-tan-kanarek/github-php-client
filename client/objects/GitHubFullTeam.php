@@ -4,7 +4,7 @@ require_once(__DIR__ . '/GitHubTeam.php');
 
 	
 
-class GitHubFullTeam extends GitHubObject
+class GitHubFullTeam extends GitHubTeam
 {
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
