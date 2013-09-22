@@ -12,10 +12,16 @@ class GitHubTeam extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'id' => 'int',
 			'url' => 'string',
-			'name' => 'string',
+			'name' => 'string'
 		));
 	}
+
+	/**
+	 * @var int
+	 */
+	protected $id;
 	
 	/**
 	 * @var string
@@ -26,6 +32,14 @@ class GitHubTeam extends GitHubObject
 	 * @var string
 	 */
 	protected $name;
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
 	/**
 	 * @return string

@@ -1,5 +1,8 @@
 <?php
 
+require_once(__DIR__ . '/GitHubClientException.php');
+
+
 abstract class GitHubClientBase
 {
 	protected $url = 'https://api.github.com';
@@ -161,7 +164,8 @@ abstract class GitHubClientBase
 			case 'POST':
 				curl_setopt($c, CURLOPT_POST, true);
 				if(count($data))
-					curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+					curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($data));
+
 				break;
 				
 			case 'PUT':
