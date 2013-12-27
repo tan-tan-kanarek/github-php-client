@@ -47,11 +47,12 @@ class GitHubIssuesComments extends GitHubService
 	 * 
 	 * @return GitHubIssueComment
 	 */
-	public function createComment($owner, $repo, $id)
+	public function createComment($owner, $repo, $issue, $body)
 	{
 		$data = array();
+		$data['body'] = $body;
 		
-		return $this->client->request("/repos/$owner/$repo/issues/comments/$id", 'PATCH', $data, 200, 'GitHubIssueComment');
+		return $this->client->request("/repos/$owner/$repo/issues/$issue/comments", 'POST', $data, 201, 'GitHubIssueComment');
 	}
 	
 	/**
