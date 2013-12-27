@@ -28,3 +28,7 @@ GitHub API PHP Client
         echo get_class($commit) . " - Sha: " . $commit->getSha() . "\n";
     }
     
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ivanfemia/github-php-client/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
