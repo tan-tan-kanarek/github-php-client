@@ -162,6 +162,7 @@ abstract class GitHubClientBase
 				break;
 				
 			case 'POST':
+			case 'PATCH':
 				curl_setopt($c, CURLOPT_POST, true);
 				curl_setopt($c,CURLOPT_HTTPHEADER,array("Expect:"));
 				if(count($data))
