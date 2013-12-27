@@ -77,9 +77,11 @@ class GitHubIssues extends GitHubService
 	 * 	Issue. Send an empty array (`[]`) to clear all Labels from the Issue.
 	 * @return GitHubIssue
 	 */
-	public function createAnIssue($owner, $repo, $number, $assignee = null, $state = null, $milestone = null, $labels = null)
+	public function createAnIssue($owner, $repo, $title, $body, $assignee = null, $state = null, $milestone = null, $labels = null)
 	{
 		$data = array();
+		$data['title'] = $title;
+		$data['body'] = $body;
 		if(!is_null($assignee))
 			$data['assignee'] = $assignee;
 		if(!is_null($state))
@@ -89,7 +91,7 @@ class GitHubIssues extends GitHubService
 		if(!is_null($labels))
 			$data['labels'] = $labels;
 		
-		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data, 200, 'GitHubIssue');
+		return $this->client->request("/repos/$owner/$repo/issues", 'POST', $data, 201, 'GitHubIssue');
 	}
 	
 }
