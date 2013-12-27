@@ -23,19 +23,23 @@ class GitHubIssuesMilestones extends GitHubService
 	/**
 	 * Create a milestone
 	 * 
+	 * @param $description (Optional) - A description of the milestone.
 	 * @param $state string (Optional) - `open` or `closed`. Default is `open`.
 	 * @param $due_on string (Optional) - ISO 8601 time.
 	 * @return GitHubMilestone
 	 */
-	public function createMilestone($owner, $repo, $number, $state = null, $due_on = null)
+	public function createMilestone($owner, $repo, $title, $description = null, $state = null, $due_on = null)
 	{
 		$data = array();
+		$data['title'] = $title;
+		if(!is_null($description))
+			$data['description'] = $description;
 		if(!is_null($state))
 			$data['state'] = $state;
 		if(!is_null($due_on))
 			$data['due_on'] = $due_on;
 		
-		return $this->client->request("/repos/$owner/$repo/milestones/$number", 'PATCH', $data, 200, 'GitHubMilestone');
+		return $this->client->request("/repos/$owner/$repo/milestones", 'POST', $data, 201, 'GitHubMilestone');
 	}
 	
 	/**
