@@ -163,6 +163,7 @@ abstract class GitHubClientBase
 				
 			case 'POST':
 				curl_setopt($c, CURLOPT_POST, true);
+				curl_setopt($c,CURLOPT_HTTPHEADER,array("Expect:"));
 				if(count($data))
 					curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($data));
 
