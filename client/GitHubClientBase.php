@@ -4,6 +4,7 @@ require_once(__DIR__ . '/GithubClientException.php');
 abstract class GitHubClientBase
 {
 	protected $url = 'https://api.github.com';
+	protected $uploadUrl = 'https://uploads.github.com';
 
 	protected $debug = false;
 	protected $username = null;
@@ -133,8 +134,18 @@ abstract class GitHubClientBase
 	 * @param array $data
 	 * @return array
 	 */
-	protected function doRequest($url, $method, array $data)
+	protected function doRequest($url, $method, $data, $contentType = null, $filePath = null)
 	{
+		if($method == 'FILE')
+			$url = $this->uploadUrl . $url;
+		else
+			$url = $this->url . $url;
+		
+		if($this->debug){
+			echo "URL: $url\n";
+			echo "Data: " . print_r($data, true) . "\n";
+		}
+		
 		$c = curl_init();
 
 		curl_setopt($c, CURLOPT_VERBOSE, $this->debug); 
@@ -151,8 +162,26 @@ abstract class GitHubClientBase
 		curl_setopt($c, CURLOPT_HEADER, true);
 		curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
 
+		if(is_array($data))
+		{
+			foreach($data as $key => $value)
+			{
+				if(is_bool($value))
+					$data[$key] = $value ? 'true' : 'false';
+			}
+		}
+		
 		switch($method)
 		{
+			case 'FILE':
+				curl_setopt($c, CURLOPT_HTTPHEADER, array("Content-type: $contentType"));
+				curl_setopt($c, CURLOPT_POST, true);
+				curl_setopt($c, CURLOPT_POSTFIELDS, file_get_contents($filePath));
+				
+				if(count($data))
+					$url .= '?' . http_build_query($data);
+				break;
+				
 			case 'GET':
 				curl_setopt($c, CURLOPT_HTTPGET, true);
 				if(count($data))
@@ -197,6 +226,9 @@ abstract class GitHubClientBase
 		
 		curl_close($c);
 
+		if($this->debug)
+			echo "Response:\n$response\n";
+		
 		return $response;
 	}
 
@@ -205,7 +237,7 @@ abstract class GitHubClientBase
 		return $this->request($this->lastUrl, $this->lastMethod, $data, $this->lastExpectedHttpCode, $this->lastReturnType, $this->lastReturnIsArray);
 	}
 	
-	public function request($url, $method, array $data, $expectedHttpCode, $returnType, $isArray = false)
+	public function request($url, $method, $data, $expectedHttpCode, $returnType, $isArray = false)
 	{
 		$this->lastUrl = $url;
 		$this->lastMethod = $method;
@@ -214,7 +246,7 @@ abstract class GitHubClientBase
 		$this->lastReturnIsArray = $isArray;
 		$this->lastReturnType = $returnType;
 		
-		if(!is_null($this->page))
+		if(is_array($data) && !is_null($this->page))
 		{
 			if(!is_numeric($this->page) || $this->page <= 0)
 			{
@@ -233,18 +265,28 @@ abstract class GitHubClientBase
 			
 			$this->resetPage();
 		}
-		
-		$url = $this->url . $url;
-
+			
 		$response = $this->doRequest($url, $method, $data);
 		
+		return $this->parseResponse($url, $response, $returnType, $expectedHttpCode, $isArray);
+	}
+	
+	public function parseResponse($url, $response, $returnType, $expectedHttpCode, $isArray = false)
+	{
 		// parse response
-		$header = true;
+		$header = false;
 		$content = array();
 		$status = 200;
+			
 		foreach(explode("\r\n", $response) as $line)
 		{
-			if ($line == '') 
+			if (strpos($line, 'HTTP/1.1') === 0)
+			{
+				$lineParts = explode(' ', $line);
+				$status = intval($lineParts[1]);
+				$header = true;
+			}
+			else if ($line == '') 
 			{
 				$header = false;
 			}
@@ -297,6 +339,42 @@ abstract class GitHubClientBase
 			return GitHubObject::fromArray($response, $returnType);
 		else
 			return new $returnType($response);
+	}
+	
+	public function upload($url, $data, $expectedHttpCode, $returnType, $contentType, $filePath)
+	{
+		$method = 'FILE';
+		
+		$this->lastUrl = $url;
+		$this->lastMethod = $method;
+		$this->lastData = $data;
+		$this->lastExpectedHttpCode = $expectedHttpCode;
+		$this->lastReturnIsArray = false;
+		$this->lastReturnType = $returnType;
+		
+		if(!is_null($this->page))
+		{
+			if(!is_numeric($this->page) || $this->page <= 0)
+			{
+				$this->resetPage();
+				throw new GitHubClientException("Page must be positive value", GitHubClientException::PAGE_INVALID);
+			}
+				
+			if(!is_numeric($this->pageSize) || $this->pageSize <= 0 || $this->pageSize > 100)
+			{
+				$this->resetPage();
+				throw new GitHubClientException("Page size must be positive value, maximum value is 100", GitHubClientException::PAGE_SIZE_INVALID);
+			}
+				
+			$data['page'] = $this->page;
+			$data['per_page'] = $this->pageSize;
+			
+			$this->resetPage();
+		}
+		
+		$response = $this->doRequest($url, $method, $data, $contentType, $filePath);
+		
+		return $this->parseResponse($url, $response, $returnType, $expectedHttpCode);
 	}
 
 	public function getFile($user, $repo, $branch, $file)
