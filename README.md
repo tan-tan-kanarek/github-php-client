@@ -2,6 +2,10 @@
 GitHub API PHP Client
 ---
 
+
+See [full API reference](https://github.com/tan-tan-kanarek/github-php-client/blob/master/client.md "full API reference")
+
+
 ## Authenticating
 
     <?php
