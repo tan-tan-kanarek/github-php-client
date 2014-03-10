@@ -31,7 +31,6 @@ GitHub API PHP Client
         echo get_class($commit) . " - Sha: " . $commit->getSha() . "\n";
     }
 
-
 ## Listing issues
 
     <?php
@@ -50,4 +49,7 @@ GitHub API PHP Client
 	{
 		/* @var $issue GitHubIssue */
 		echo get_class($issue) . "[" . $issue->getNumber() . "]: " . $issue->getTitle() . "\n";
-	}
+	}    
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ivanfemia/github-php-client/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
