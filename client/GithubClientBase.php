@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__ . '/GithubClientException.php');
 
 abstract class GitHubClientBase
 {
