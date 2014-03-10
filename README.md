@@ -2,6 +2,15 @@
 GitHub API PHP Client
 ---
 
+## Authenticating
+
+    <?php
+    require_once(__DIR__ . '/client/GitHubClient.php');
+    
+    $client = new GitHubClient();
+	$client->setCredentials($username, $password);
+
+
 ## Listing commits
 
     <?php
