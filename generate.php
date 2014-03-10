@@ -24,6 +24,7 @@ $objects = array();
 scanDirectory(realpath('v3'));
 generateGithubClient();
 generateGithubObjects();
+generateGithubDoc();
 
 function scanDirectory($dir, $classPath = array())
 {
@@ -55,6 +56,186 @@ function scanDirectory($dir, $classPath = array())
 	}
 	$d->close();
 }
+
+function generateGithubDoc()
+{
+	global $classTree;
+	
+	$doc = "
+---
+#GitHub API PHP Client
+---
+
+";
+
+	foreach($classTree['/'] as $file => $className)
+	{	
+		$varName = lcfirst($className);
+		$doc .= "
+## GitHub$className
+Could be access directly from GitHubClient->$varName
+";
+		$doc .= appendGithubServiceDoc($file, $className);
+	}
+	
+	file_put_contents(__DIR__ . "/client.md", $doc);
+}
+
+function appendGithubServiceDoc($file, $name)
+{
+	global $classTree, $objects;
+	
+	$classPath = str_replace(array(__DIR__, '.md', '\\v3', '\\'), array('', '', '', '/'), $file);
+	echo "Generating service doc: $name [$classPath]\n";
+	$content = file_get_contents($file);
+'
+## List your notifications
+
+List all notifications for the current user, grouped by repository.
+
+    GET /notifications
+';
+	
+	preg_match_all('/## ([^\n]+)\n\n(.*)(\n\n)?    (GET|PUT|PATCH|DELETE) ([^\n]+)\n\n(([^\n]+\n)+\n)?(### (Parameters|Input)\n\n([^#]+))?### Response\n(\n<%= headers (\d+) %>)?(\n<%= json( :([^\s]+) |\(:([^\)]+)\) [^%]*)%>)?\n\n/sU', $content, $matches);
+
+	$doc = '
+### Attributes:
+';
+
+	if(isset($classTree[$classPath]))
+	{
+		foreach($classTree[$classPath] as $file => $className)
+		{
+			$varName = lcfirst(preg_replace("/^$name/", '', $className));
+			$doc .= "
+ - GitHub$className $varName";
+		}
+	
+	$doc .= '
+
+### Sub-services:
+';
+	
+		foreach($classTree[$classPath] as $file => $className)
+		{
+			$varName = lcfirst(preg_replace("/^$name/", '', $className));
+			$doc .= "
+ - GitHub$className $varName";
+		}
+	}
+	
+	$doc .= '
+
+### Methods:
+';
+	
+	foreach($matches[1] as $index => $description)
+	{
+		$methodName = lcfirst(str_replace(array(' A ', ' '), array('', ''), ucwords(preg_replace('/[^\w]/', ' ', strtolower($description)))));
+		if($methodName == 'list')
+			$methodName .= $name;
+			
+		$httpMethod = $matches[4][$index];
+		$url = str_replace(':', '$', $matches[5][$index]);
+		$arguments = array();
+		$dataArguments = array();
+		if(preg_match_all('/(\$[^\/?.]+)/', $url, $argumentsMatches))
+			$arguments = $argumentsMatches[1];
+		
+		$paremetersDescription = $matches[10][$index];
+		$docCommentParameters = array();
+		$paremetersMatches = null;
+		if($paremetersDescription && preg_match_all('/([^\n]+)\n: _([^_]+)_ \*\*([^\*]+)\*\* (.+)\n\n/sU', $paremetersDescription, $paremetersMatches))
+		{
+			foreach($paremetersMatches[1] as $parameterIndex => $parameterName)
+			{
+				$parameterName = preg_replace('/[^\w]/', '', $parameterName);
+				$parameterRequirement = $paremetersMatches[2][$parameterIndex];
+				$parameterType = $paremetersMatches[3][$parameterIndex];
+				$parameterDescription = $paremetersMatches[4][$parameterIndex];
+				$parameterDescription = implode("\n	 * \t", explode("\n", $parameterDescription));
+				$docCommentParameters[] = "$parameterType parameterName ($parameterRequirement) $parameterDescription";
+				$argument = "\$$parameterName";
+				$dataArguments[] = $parameterName;
+				if($parameterRequirement == 'Optional')
+					$argument .= ' = null';
+					
+				$arguments[] = $argument;
+			}
+		}
+		
+		$expectedStatus = 200;
+		if(isset($matches[12][$index]) && is_numeric($matches[12][$index]))
+			$expectedStatus = $matches[12][$index];
+		
+		$arguments = implode(', ', $arguments);
+		$doc .= "
+
+**$methodName:**
+
+Expected HTTP status: $expectedStatus
+*$description*
+
+
+Attributes:
+";
+		
+		foreach($docCommentParameters as $docCommentParameter)
+		{
+			$doc .= "
+ - $docCommentParameter";
+		}
+						
+		$responseType = null;
+		$returnType = null;
+		$returnArray = false;
+		
+		if(isset($matches[15][$index]) && strlen($matches[15][$index]))
+		{
+			$responseType = $matches[15][$index];
+		}
+		elseif(isset($matches[16][$index]) && strlen($matches[16][$index]))
+		{
+			$responseType = $matches[16][$index];
+			$returnArray = true;
+		}
+	
+		if($responseType)
+		{
+			$objects[strtolower($responseType)] = true;
+			$returnType = gitHubClassName($responseType);
+			
+			if($returnArray)
+			{
+			$doc .= "
+
+Returns array of $returnType objects";
+			}
+			else 
+			{
+			$doc .= "
+
+Returns $returnType object";
+			}
+		}
+	}
+
+	if(isset($classTree[$classPath]))
+	{	
+		foreach($classTree[$classPath] as $file => $className)
+		{
+			$varName = lcfirst($className);
+			$doc .= "
+## GitHub$className
+Could be access directly from GitHubClient->{$name}->{$varName}
+";
+			$doc .= appendGithubServiceDoc($file, $className);
+		}
+	}
+
+	return $doc;
+}
+
 
 function generateGithubClient()
 {
