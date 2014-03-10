@@ -64,5 +64,39 @@ See [full API reference](https://github.com/tan-tan-kanarek/github-php-client/bl
 		echo get_class($issue) . "[" . $issue->getNumber() . "]: " . $issue->getTitle() . "\n";
 	}    
 
+## Creating release
+
+	<?
+	require_once(__DIR__ . '/client/GitHubClient.php');
+	
+	$owner = 'tan-tan-kanarek';
+	$repo = 'github-php-client';
+	$username = 'tan-tan-kanarek';
+	$password = 'myPassword';
+	
+	$tag_name = 'myTag';
+	$target_commitish = 'master';
+	$name = 'myReleaseName';
+	$body = 'My release description';
+	$draft = false;
+	$prerelease = true;
+	
+	$client = new GitHubClient();
+	$client->setDebug(true);
+	$client->setCredentials($username, $password);
+	
+	$release = $client->repos->releases->create($owner, $repo, $tag_name, $target_commitish, $name, $body, $draft, $prerelease);
+	/* @var $release GitHubReposRelease */
+	$releaseId = $release->getId();
+	
+	$filePath = 'C:\myPath\bin\myFile.jar';
+	$contentType = 'application/java-archive';
+	$name = 'MyFile-1.0.0.jar';
+	
+	$client->repos->releases->assets->upload($owner, $repo, $releaseId, $name, $contentType, $filePath);
+;
+
+
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ivanfemia/github-php-client/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 

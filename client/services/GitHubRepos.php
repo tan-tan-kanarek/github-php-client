@@ -11,6 +11,7 @@ require_once(__DIR__ . '/GitHubReposForks.php');
 require_once(__DIR__ . '/GitHubReposHooks.php');
 require_once(__DIR__ . '/GitHubReposKeys.php');
 require_once(__DIR__ . '/GitHubReposMerging.php');
+require_once(__DIR__ . '/GitHubReposReleases.php');
 require_once(__DIR__ . '/GitHubReposStatistics.php');
 require_once(__DIR__ . '/GitHubReposStatuses.php');
 require_once(__DIR__ . '/../objects/GitHubSimpleRepo.php');
@@ -71,6 +72,11 @@ class GitHubRepos extends GitHubService
 	public $merging;
 	
 	/**
+	 * @var GitHubReposReleases
+	 */
+	public $releases;
+	
+	/**
 	 * @var GitHubReposStatistics
 	 */
 	public $statistics;
@@ -97,6 +103,7 @@ class GitHubRepos extends GitHubService
 		$this->hooks = new GitHubReposHooks($client);
 		$this->keys = new GitHubReposKeys($client);
 		$this->merging = new GitHubReposMerging($client);
+		$this->releases = new GitHubReposReleases($client);
 		$this->statistics = new GitHubReposStatistics($client);
 		$this->statuses = new GitHubReposStatuses($client);
 	}
