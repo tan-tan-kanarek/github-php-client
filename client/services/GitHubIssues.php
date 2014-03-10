@@ -58,7 +58,19 @@ class GitHubIssues extends GitHubService
 	 * 
 	 * @return GitHubIssue
 	 */
-	public function listIssues($owner, $repo, $number)
+	public function listIssues($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/issues", 'GET', $data, 200, 'GitHubIssue', true);
+	}
+	
+	/**
+	 * List issues
+	 * 
+	 * @return GitHubIssue
+	 */
+	public function getIssue($owner, $repo, $number)
 	{
 		$data = array();
 		
