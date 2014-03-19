@@ -826,12 +826,24 @@ Could be access directly from GitHubClient->libraries
 ### Methods:
 
 ## GitHubMarkdown
-Could be access directly from GitHubClient->markdown
 
 ### Attributes:
 
 
 ### Methods:
+
+**getTextAsMarkdown:**
+
+Expected HTTP status: 200
+*Render an arbitrary Markdown document*
+
+Attributes:
+ - String text (Required) markdown text to process
+ - String mode (Optional) `markdown` or `gfm`. Defaults to `markdown`
+ - String context (Optional) the repository context. Only taken into account when rendering as gfm
+
+Returns text/html 
+
 
 ## GitHubMedia
 Could be access directly from GitHubClient->media

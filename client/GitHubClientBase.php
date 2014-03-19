@@ -334,6 +334,9 @@ abstract class GitHubClientBase
 		if($status !== $expectedHttpCode)
 			throw new GitHubClientException("Expected status [$expectedHttpCode], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
 		
+		if ( $returnType == 'string' )
+			return implode("\n", $content);
+		
 		$response = json_decode(implode("\n", $content));
 		if($isArray)
 			return GitHubObject::fromArray($response, $returnType);
