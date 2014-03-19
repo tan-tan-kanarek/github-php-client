@@ -16,7 +16,7 @@ class GitHubMarkdown extends GitHubService
 		if(!is_null($context))
 			$data['context'] = $context;
 		
-		return $this->client->request("/markdown", 'POST', json_encode($data), 200, 'text/html', false);
+		return $this->client->request("/markdown", 'POST', json_encode($data), 200, 'string', false);
 	}
 }
 
