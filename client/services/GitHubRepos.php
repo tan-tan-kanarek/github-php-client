@@ -111,11 +111,77 @@ class GitHubRepos extends GitHubService
 	/**
 	 * List your repositories
 	 * 
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
+	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name 
+	 * @param $direction string (Optional) - Can be one of asc or desc. Default: when using full_name: asc; otherwise desc
+	 * 
 	 * @return array<GitHubSimpleRepo>
 	 */
-	public function listYourRepositories()
+	public function listYourRepositories($type = null, $sort = null, $direction = null)
 	{
 		$data = array();
+		if(!is_null($type))
+			$data['type'] = $type;
+		if(!is_null($sort))
+			$data['sort'] = $sort;
+		if(!is_null($direction))
+			$data['direction'] = $direction;
+		
+		return $this->client->request("/user/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+	}
+	
+	/**
+	 * List user repositories
+	 * 
+	 * @param $user string - User login name
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
+	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name 
+	 * @param $direction string (Optional) - Can be one of asc or desc. Default: when using full_name: asc; otherwise desc
+	 * 
+	 * @return array<GitHubSimpleRepo>
+	 */
+	public function listUserRepositories($user, $type = null, $sort = null, $direction = null)
+	{
+		$data = array();
+		if(!is_null($type))
+			$data['type'] = $type;
+		if(!is_null($sort))
+			$data['sort'] = $sort;
+		if(!is_null($direction))
+			$data['direction'] = $direction;
+		
+		return $this->client->request("/users/$user/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+	}
+	
+	/**
+	 * List organization repositories
+	 * 
+	 * @param $organization string - Organization name
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
+	 * 
+	 * @return array<GitHubSimpleRepo>
+	 */
+	public function listOrganizationRepositories($organization, $type = null)
+	{
+		$data = array();
+		if(!is_null($type))
+			$data['type'] = $type;
+		
+		return $this->client->request("/orgs/$organization/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+	}
+	
+	/**
+	 * List repositories
+	 * 
+	 * @param $since string (Optional) - The integer ID of the last Repository that you’ve seen.
+	 * 
+	 * @return array<GitHubSimpleRepo>
+	 */
+	public function listRepositories($since = null)
+	{
+		$data = array();
+		if(!is_null($since))
+			$data['since'] = $since;
 		
 		return $this->client->request("/repositories", 'GET', $data, 200, 'GitHubSimpleRepo', true);
 	}
