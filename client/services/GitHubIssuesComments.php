@@ -52,7 +52,7 @@ class GitHubIssuesComments extends GitHubService
 		$data = array();
 		$data['body'] = $body;
 		
-		return $this->client->request("/repos/$owner/$repo/issues/$issue/comments", 'POST', $data, 201, 'GitHubIssueComment');
+		return $this->client->request("/repos/$owner/$repo/issues/$issue/comments", 'POST', json_encode($data), 201, 'GitHubIssueComment');
 	}
 	
 	/**
