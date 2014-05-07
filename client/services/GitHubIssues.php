@@ -80,28 +80,29 @@ class GitHubIssues extends GitHubService
 	/**
 	 * Create an issue
 	 * 
-	 * @param $assignee string (Optional) - Login for the user that this issue should be
-	 * 	assigned to.
-	 * @param $state string (Optional) - State of the issue: `open` or `closed`.
+	 * @param $title string (Required) - The title of the issue.
+	 * @param $body string (Optional) - The contents of the issue.
+	 * @param $assignee string (Optional) - Login for the user that this issue should be assigned to.
 	 * @param $milestone number (Optional) - Milestone to associate this issue with.
-	 * @param $labels array (Optional) of **strings** - Labels to associate with this
-	 * 	issue. Pass one or more Labels to _replace_ the set of Labels on this
-	 * 	Issue. Send an empty array (`[]`) to clear all Labels from the Issue.
+	 * @param $labels array (Optional) of strings - Labels to associate with this issue. 
+	 * 	Pass one or more Labels to _replace_ the set of Labels on this Issue. 
+	 * 	Send an empty array (`[]`) to clear all Labels from the Issue.
 	 * @return GitHubIssue
 	 */
-	public function createAnIssue($owner, $repo, $title, $body, $assignee = null, $state = null, $milestone = null, $labels = null)
+	public function createAnIssue($owner, $repo, $title, $body = null, $assignee = null, $milestone = null, $labels = null)
 	{
 		$data = array();
 		$data['title'] = $title;
-		$data['body'] = $body;
+		if(!is_null($body))
+			$data['body'] = $body;
 		if(!is_null($assignee))
 			$data['assignee'] = $assignee;
-		if(!is_null($state))
-			$data['state'] = $state;
 		if(!is_null($milestone))
 			$data['milestone'] = $milestone;
 		if(!is_null($labels))
 			$data['labels'] = $labels;
+		
+		$data = json_encode($data);
 		
 		return $this->client->request("/repos/$owner/$repo/issues", 'POST', $data, 201, 'GitHubIssue');
 	}
