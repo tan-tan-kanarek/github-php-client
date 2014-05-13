@@ -216,6 +216,17 @@ abstract class GitHubClientBase
 				}
 				curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
 				break;
+
+			case 'PATCH':
+			case 'DELETE':
+				curl_setopt($c, CURLOPT_CUSTOMREQUEST, $method);
+
+				if ( $data )
+				{
+					curl_setopt($c, CURLOPT_POST, true);
+					curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+				}
+				break;
 		}
 
 		curl_setopt($c, CURLOPT_URL, $url);
