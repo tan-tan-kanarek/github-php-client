@@ -337,11 +337,16 @@ abstract class GitHubClientBase
 		if ( $returnType == 'string' )
 			return implode("\n", $content);
 		
-		$response = json_decode(implode("\n", $content));
-		if($isArray)
-			return GitHubObject::fromArray($response, $returnType);
-		else
-			return new $returnType($response);
+		if ( $returnType )
+		{
+			$response = json_decode(implode("\n", $content));
+			if($isArray)
+				return GitHubObject::fromArray($response, $returnType);
+			else
+				return new $returnType($response);
+		}
+
+		return null;
 	}
 	
 	public function upload($url, $data, $expectedHttpCode, $returnType, $contentType, $filePath)
