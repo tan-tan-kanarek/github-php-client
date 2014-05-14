@@ -37,7 +37,25 @@ class GitHubReposComments extends GitHubService
 	 * 
 	 * @return GitHubCommitComment
 	 */
-	public function createCommitComment($owner, $repo, $id)
+	public function createCommitComment($owner, $repo, $sha, $body, $path = null, $position = null)
+	{
+		$data = array(
+			'body' => $body,
+		);
+		if (!is_null($path))
+			$data['path'] = $path;
+		if (!is_null($position))
+			$data['position'] = $position;
+
+		return $this->client->request("/repos/$owner/$repo/commits/$sha/comments", 'POST', json_encode($data), 201, 'GitHubCommitComment');
+	}
+
+	/**
+	 * Get a single commit comment
+	 *
+	 * @return GitHubCommitComment
+	 */
+	public function getSingleCommitComment($owner, $repo, $id)
 	{
 		$data = array();
 		
@@ -47,8 +65,22 @@ class GitHubReposComments extends GitHubService
 	/**
 	 * Update a commit comment
 	 * 
+	 * @return GitHubCommitComment
 	 */
-	public function updateCommitComment($owner, $repo, $id)
+	public function updateCommitComment($owner, $repo, $id, $body)
+	{
+		$data = array(
+			'body' => $body,
+		);
+
+		return $this->client->request("/repos/$owner/$repo/comments/$id", 'PATCH', json_encode($data), 200, 'GitHubCommitComment');
+	}
+
+	/**
+	 * Delete a commit comment
+	 *
+	 */
+	public function deleteCommitComment($owner, $repo, $id)
 	{
 		$data = array();
 		
