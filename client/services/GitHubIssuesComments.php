@@ -56,6 +56,19 @@ class GitHubIssuesComments extends GitHubService
 	}
 	
 	/**
+	 * Edit a comment
+	 *
+	 * @return GitHubIssueComment
+	 */
+	public function editComment($owner, $repo, $id, $body)
+	{
+		$data = array();
+		$data['body'] = $body;
+
+		return $this->client->request("/repos/$owner/$repo/issues/comments/$id", 'PATCH', json_encode($data), 200, 'GitHubIssueComment');
+	}
+
+	/**
 	 * Delete a comment
 	 * 
 	 */
