@@ -17,7 +17,7 @@ class GitHubIssuesComments extends GitHubService
 	 * @param $since String (Optional) of a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
 	 * @return array<GitHubPullComment>
 	 */
-	public function listCommentsOnAnIssue($owner, $repo, $sort = null, $direction = null, $since = null)
+	public function listCommentsOnAnIssue($owner, $repo, $id, $sort = null, $direction = null, $since = null)
 	{
 		$data = array();
 		if(!is_null($sort))
@@ -27,7 +27,7 @@ class GitHubIssuesComments extends GitHubService
 		if(!is_null($since))
 			$data['since'] = $since;
 		
-		return $this->client->request("/repos/$owner/$repo/issues/comments", 'GET', $data, 200, 'GitHubPullComment', true);
+		return $this->client->request("/repos/$owner/$repo/issues/$id/comments", 'GET', $data, 200, 'GitHubPullComment', true);
 	}
 	
 	/**
