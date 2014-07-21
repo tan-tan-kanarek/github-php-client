@@ -4,7 +4,7 @@ require_once(__DIR__ . '/GitHubUser.php');
 
 	
 
-class GitHubContributor extends GitHubObject
+class GitHubContributor extends GitHubUser
 {
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
