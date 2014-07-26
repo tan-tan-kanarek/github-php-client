@@ -39,7 +39,7 @@ class GitHubIssuesMilestones extends GitHubService
 		if(!is_null($due_on))
 			$data['due_on'] = $due_on;
 		
-		return $this->client->request("/repos/$owner/$repo/milestones", 'POST', $data, 201, 'GitHubMilestone');
+		return $this->client->request("/repos/$owner/$repo/milestones", 'POST', json_encode($data), 201, 'GitHubMilestone');
 	}
 	
 	/**

@@ -134,8 +134,8 @@ class GitHubIssues extends GitHubService
 			$data['milestone'] = $milestone;
 		if(!is_null($labels))
 			$data['labels'] = $labels;
-
-		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data, 200, 'GitHubIssue');
+		
+		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', json_encode($data), 200, 'GitHubIssue');
 	}		
 	
 }
