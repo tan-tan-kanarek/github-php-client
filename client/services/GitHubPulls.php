@@ -104,5 +104,26 @@ class GitHubPulls extends GitHubService
 		return $this->client->request("/repos/$owner/$repo/pulls/$number/files", 'GET', $data, 200, 'GitHubFile', true);
 	}
 	
+	/**
+	 * Get if a pull request has been merged
+	 *
+	 * @return boolean
+	 */
+	public function isPullRequestMerged($owner, $repo, $number)
+	{
+		$merged = false;
+
+		try
+		{
+			$data = array();
+			$this->client->request("/repos/$owner/$repo/pulls/$number/merge", 'GET', $data, 204, '');
+			$merged = true;
+		}
+		catch ( GitHubClientException $e )
+		{
+		}
+
+		return $merged;
+	}
 }
 
