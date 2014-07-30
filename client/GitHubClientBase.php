@@ -352,9 +352,19 @@ abstract class GitHubClientBase
 		{
 			$response = json_decode(implode("\n", $content));
 			if($isArray)
+			{
+				if(!is_array($response))
+					throw new GitHubClientException("Expected array, actual results:" . print_r($response, true), GitHubClientException::INVALID_RESULT);
+					
 				return GitHubObject::fromArray($response, $returnType);
+			}
 			else
+			{
+				if(is_array($response))
+					throw new GitHubClientException("Expected object, actual results:" . print_r($response, true), GitHubClientException::INVALID_RESULT);
+					
 				return new $returnType($response);
+			}
 		}
 
 		return null;

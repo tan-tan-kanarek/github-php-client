@@ -6,4 +6,5 @@ class GitHubClientException extends Exception
 	const PAGE_INVALID = 2;
 	const PAGE_SIZE_INVALID = 3;
 	const INVALID_HTTP_CODE = 4;
+	const INVALID_RESULT = 5;
 }
