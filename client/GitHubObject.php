@@ -9,7 +9,17 @@ class GitHubObject
 	{
 		$array = array();
 		foreach($json as $jsonObject)
-			$array[] = new $type($jsonObject);
+		{
+			$object = new $type($jsonObject);
+			if(method_exists($object, 'getId'))
+			{
+				$array[$object->getId()] = $object;
+			}
+			else
+			{
+				$array[] = $object;
+			}
+		}
 			
 		return $array;
 	}
