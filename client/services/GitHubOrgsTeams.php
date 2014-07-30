@@ -32,7 +32,7 @@ class GitHubOrgsTeams extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/teams/$id", 'GET', $data, 200, 'GitHubFullTeam', true);
+		return $this->client->request("/teams/$id", 'GET', $data, 200, 'GitHubFullTeam', false);
 	}
 	
 	/**
