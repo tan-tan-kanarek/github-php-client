@@ -218,6 +218,18 @@ class GitHubRepos extends GitHubService
 	}
 	
 	/**
+	 * Get Repo
+	 * 
+	 * @return GitHubFullRepo
+	 */
+	public function get($owner, $repo)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo", 'GET', $data, 200, 'GitHubFullRepo');
+	}
+	
+	/**
 	 * List contributors
 	 * 
 	 * @return array<GitHubContributor>
