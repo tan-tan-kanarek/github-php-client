@@ -4,7 +4,7 @@ require_once(__DIR__ . '/GitHubSimpleRepo.php');
 
 	
 
-class GitHubRepo extends GitHubObject
+class GitHubRepo extends GitHubSimpleRepo
 {
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
