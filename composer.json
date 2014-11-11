@@ -1,0 +1,8 @@
+{
+  "name": "tan-tan-kanarek/github-php-client",
+  "description": "PHP client for the Github API",
+  "license": "proprietary",
+  "autoload": {
+    "classmap": ["client/"]
+  }
+}
