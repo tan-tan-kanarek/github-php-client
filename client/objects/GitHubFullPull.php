@@ -4,12 +4,12 @@ require_once(__DIR__ . '/GitHubPull.php');
 require_once(__DIR__ . '/GitHubUser.php');
 	
 
-class GitHubFullPull extends GitHubObject
+class GitHubFullPull extends GitHubPull
 {
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
 	 */
-	protected function getAttributes()
+	public function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
 			'merge_commit_sha' => 'string',
@@ -20,6 +20,7 @@ class GitHubFullPull extends GitHubObject
 			'commits' => 'int',
 			'additions' => 'int',
 			'deletions' => 'int',
+			'changed_files' => 'int',
 		));
 	}
 	
@@ -62,6 +63,12 @@ class GitHubFullPull extends GitHubObject
 	 * @var int
 	 */
 	protected $deletions;
+
+	/**
+	 * @var int
+	 */
+	protected $changed_files;
+
 
 	/**
 	 * @return string
@@ -127,5 +134,12 @@ class GitHubFullPull extends GitHubObject
 		return $this->deletions;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getChangedFiles()
+	{
+		return $this->changed_files;
+	}
 }
 
