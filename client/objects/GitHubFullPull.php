@@ -9,7 +9,7 @@ class GitHubFullPull extends GitHubPull
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
 	 */
-	public function getAttributes()
+	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
 			'merge_commit_sha' => 'string',
