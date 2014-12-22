@@ -29,17 +29,22 @@ class GitHubPulls extends GitHubService
 	}
 	
 	/**
-	 * Link Relations
+	 * List pull requests
 	 * 
-	 * @param $state string (Optional) - `open` or `closed` to filter by state. Default
+	 * @param $state string (Optional) - `open`, `closed` or `all` to filter by state. Default
 	 * 	is `open`.
 	 * @param $head string (Optional) - Filter pulls by head user and branch name in the format
 	 * 	of: `user:ref-name`. Example: `github:new-script-format`.
 	 * @param $base string (Optional) - Filter pulls by base branch name. Example:
 	 * 	`gh-pages`.
+	 * @param $sort string (Optional) - What to sort results by. Can be either `created`,
+	 *  `updated`, popularity (comment count) or long-running (age, filtering by pulls updated
+	 *  in the last month). Default: `created`
+	 * @param $direction string (Optional) - The direction of the sort. Can be either `asc` or
+	 *  `desc`. Default: `desc` when sort is created or sort is not specified, otherwise `asc`.
 	 * @return array<GitHubPull>
 	 */
-	public function linkRelations($owner, $repo, $state = null, $head = null, $base = null)
+	public function listPullRequests($owner, $repo, $state = null, $head = null, $base = null, $sort = null, $direction = null)
 	{
 		$data = array();
 		if(!is_null($state))
@@ -48,10 +53,20 @@ class GitHubPulls extends GitHubService
 			$data['head'] = $head;
 		if(!is_null($base))
 			$data['base'] = $base;
+		if(!is_null($sort))
+			$data['sort'] = $sort;
+		if(!is_null($direction))
+			$data['direction'] = $direction;
 		
 		return $this->client->request("/repos/$owner/$repo/pulls", 'GET', $data, 200, 'GitHubPull', true);
 	}
 	
+	/* This method is left for backward compatibility */
+	public function linkRelations($owner, $repo, $state = null, $head = null, $base = null)
+	{
+		return $this->listPullRequests( $owner, $repo, $state, $head, $base );
+	}
+
 	/**
 	 * Get a single pull request
 	 * 
@@ -65,13 +80,14 @@ class GitHubPulls extends GitHubService
 	}
 	
 	/**
-	 * Mergability
+	 * updatePullRequest
 	 * 
-	 * @param $state string (Optional) - State of this Pull Request. Valid values are
-	 * 	`open` and `closed`.
-	 * @return GitHubPull
+	 * @param $state string - State of this Pull Request. Valid values are either `open` or `closed`.
+	 * @param $title string - The title of the pull request.
+	 * @param $body string - The contents of the pull request.
+	 * @return GitHubFullPull
 	 */
-	public function mergability($owner, $repo, $number, $state = null)
+	public function updatePullRequest($owner, $repo, $number, $state = null, $title = null, $body = null)
 	{
 		$data = array();
 		if(!is_null($state))
@@ -80,6 +96,12 @@ class GitHubPulls extends GitHubService
 		return $this->client->request("/repos/$owner/$repo/pulls/$number", 'PATCH', $data, 200, 'GitHubPull');
 	}
 	
+	/* This method is left for backward compatibility */
+	public function mergability($owner, $repo, $number, $state = null)
+	{
+		return $this->updatePullRequest($owner, $repo, $number, $state);
+	}
+
 	/**
 	 * List commits on a pull request
 	 * 
