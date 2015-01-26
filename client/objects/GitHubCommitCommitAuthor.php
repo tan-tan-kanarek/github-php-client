@@ -12,6 +12,9 @@ class GitHubCommitCommitAuthor extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'name' => 'string',
+			'date' => 'string',
+			'email' => 'string',
 		));
 	}
 	
