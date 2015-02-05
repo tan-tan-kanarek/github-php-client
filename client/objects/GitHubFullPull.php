@@ -20,6 +20,7 @@ class GitHubFullPull extends GitHubPull
 			'commits' => 'int',
 			'additions' => 'int',
 			'deletions' => 'int',
+			'changed_files' => 'int',
 		));
 	}
 	
@@ -62,6 +63,12 @@ class GitHubFullPull extends GitHubPull
 	 * @var int
 	 */
 	protected $deletions;
+
+	/**
+	 * @var int
+	 */
+	protected $changed_files;
+
 
 	/**
 	 * @return string
@@ -127,5 +134,12 @@ class GitHubFullPull extends GitHubPull
 		return $this->deletions;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getChangedFiles()
+	{
+		return $this->changed_files;
+	}
 }
 

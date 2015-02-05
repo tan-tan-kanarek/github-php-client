@@ -3,6 +3,7 @@
 require_once(__DIR__ . '/../GitHubObject.php');
 require_once(__DIR__ . '/GitHubUser.php');
 require_once(__DIR__ . '/GitHubPullLinks.php');
+require_once(__DIR__ . '/GitHubPullBranch.php');
 	
 
 class GitHubPull extends GitHubObject
@@ -13,11 +14,17 @@ class GitHubPull extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'id' => 'int',
 			'url' => 'string',
 			'html_url' => 'string',
 			'diff_url' => 'string',
 			'patch_url' => 'string',
 			'issue_url' => 'string',
+			'commits_url' => 'string',
+			'review_comments_url' => 'string',
+			'review_comment_url' => 'string',
+			'comments_url' => 'string',
+			'statuses_url' => 'string',
 			'number' => 'int',
 			'state' => 'string',
 			'title' => 'string',
@@ -27,10 +34,17 @@ class GitHubPull extends GitHubObject
 			'closed_at' => 'string',
 			'merged_at' => 'string',
 			'user' => 'GitHubUser',
-			'links' => 'GitHubPullLinks',
+			'_links' => 'GitHubPullLinks',
+			'head' => 'GitHubPullBranch',
+			'base' => 'GitHubPullBranch',
 		));
 	}
 	
+	/**
+	 * @var string
+	 */
+	protected $id;
+
 	/**
 	 * @var string
 	 */
@@ -55,6 +69,31 @@ class GitHubPull extends GitHubObject
 	 * @var string
 	 */
 	protected $issue_url;
+
+	/**
+	 * @var string
+	 */
+	protected $commits_url;
+
+	/**
+	 * @var string
+	 */
+	protected $review_comments_url;
+
+	/**
+	 * @var string
+	 */
+	protected $review_comment_url;
+
+	/**
+	 * @var string
+	 */
+	protected $comments_url;
+
+	/**
+	 * @var string
+	 */
+	protected $statuses_url;
 
 	/**
 	 * @var int
@@ -104,7 +143,26 @@ class GitHubPull extends GitHubObject
 	/**
 	 * @var GitHubPullLinks
 	 */
-	protected $links;
+	protected $_links;
+
+	/**
+	 * @var GitHubPullBranch
+	 */
+	protected $head;
+
+	/**
+	 * @var GitHubPullBranch
+	 */
+	protected $base;
+
+
+	/**
+	 * @return string
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
 	/**
 	 * @return string
@@ -144,6 +202,46 @@ class GitHubPull extends GitHubObject
 	public function getIssueUrl()
 	{
 		return $this->issue_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCommitsUrl()
+	{
+		return $this->commits_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReviewCommentsUrl()
+	{
+		return $this->review_comments_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReviewCommentUrl()
+	{
+		return $this->review_comment_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCommentsUrl()
+	{
+		return $this->comments_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStatusesUrl()
+	{
+		return $this->statuses_url;
 	}
 
 	/**
@@ -223,8 +321,23 @@ class GitHubPull extends GitHubObject
 	 */
 	public function getLinks()
 	{
-		return $this->links;
+		return $this->_links;
 	}
 
+	/**
+	 * @return GitHubPullBranch
+	 */
+	public function getHead()
+	{
+		return $this->head;
+	}
+
+	/**
+	 * @return GitHubPullBranch
+	 */
+	public function getBase()
+	{
+		return $this->base;
+	}
 }
 
