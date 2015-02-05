@@ -4,7 +4,7 @@ require_once(__DIR__ . '/GitHubPull.php');
 require_once(__DIR__ . '/GitHubUser.php');
 	
 
-class GitHubFullPull extends GitHubObject
+class GitHubFullPull extends GitHubPull
 {
 	/* (non-PHPdoc)
 	 * @see GitHubObject::getAttributes()
