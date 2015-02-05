@@ -51,6 +51,8 @@ class GitHubOrgsTeams extends GitHubService
 		if(!is_null($permission))
 			$data['permission'] = $permission;
 
+		$data = json_encode($data);
+		
 		return $this->client->request("/orgs/$org/teams", 'POST', $data, 201, 'GitHubFullTeam');
 	}
 	
@@ -89,11 +91,19 @@ class GitHubOrgsTeams extends GitHubService
 	}
 
 	/**
-	 * Add member in team
+	 * Add member to team
 	 */
 	public function addTeamMember($id, $user) {
 		$data = array();
 		return $this->client->request("/teams/$id/members/$user", 'PUT', $data, 204, '');
+	}
+
+	/**
+	 * Add repo to team
+	 */
+	public function addTeamRepo($id, $org, $repo) {
+		$data = array();
+		return $this->client->request("/teams/$id/repos/$org/$repo", 'PUT', $data, 204, '');
 	}
 	
 	/**
