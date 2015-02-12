@@ -42,7 +42,7 @@ class GitHubReposCommits extends GitHubService
 	/**
 	 * Get a single commit
 	 * 
-	 * @return array<GitHubFullCommit>
+	 * @return GitHubFullCommit
 	 */
 	public function getSingleCommit($owner, $repo, $sha)
 	{
