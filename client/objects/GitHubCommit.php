@@ -70,7 +70,7 @@ class GitHubCommit extends GitHubObject
 	/**
 	 * @return string
 	 */
-	public function getHTMLUrl()
+	public function getHtmlUrl()
 	{
 		return $this->html_url;
 	}
