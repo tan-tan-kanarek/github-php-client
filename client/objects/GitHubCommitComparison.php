@@ -77,6 +77,12 @@ class GitHubCommitComparison extends GitHubObject
 	protected $total_commits;
 
 	/**
+	 *
+	 * @var GitHubFile[]
+	 */
+	protected $files;
+	
+	/**
 	 * @return string
 	 */
 	public function getUrl()
@@ -156,5 +162,13 @@ class GitHubCommitComparison extends GitHubObject
 		return $this->total_commits;
 	}
 
+	/**
+	 *
+	 * @return GitHubFile[]
+	 */
+	public function getFiles()
+	{
+		return $this->files;
+	}
 }
 
