@@ -22,6 +22,7 @@ class GitHubCommitComparison extends GitHubObject
 			'ahead_by' => 'int',
 			'behind_by' => 'int',
 			'total_commits' => 'int',
+			'files' => 'array<GitHubFile>'
 		));
 	}
 	
