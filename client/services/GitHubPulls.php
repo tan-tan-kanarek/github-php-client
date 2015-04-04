@@ -147,5 +147,41 @@ class GitHubPulls extends GitHubService
 
 		return $merged;
 	}
+	
+	
+
+	/**
+	 * Create a pull request
+	 *
+	 * @param string $owner
+	 * @param string $repo
+	 * @param string $title (Required) The title of the pull request.
+	 * @param string $head (Required) The name of the branch where your changes are implemented.
+	 *              For cross-repository pull requests in the same network,
+	 *              namespace head with a user like this: username:branch.
+	 * @param string $base (Required) The name of the branch you want your changes pulled into.
+	 *              This should be an existing branch on the current repository.
+	 *              You cannot submit a pull request to one repository
+	 *              that requests a merge to a base of another repository.
+	 * @param string $body (Optional) The contents of the pull request.
+	 * @return GitHubFullPull
+	 * @throws GitHubClientException
+	 */
+	public function createPullRequest($owner, $repo, $title, $head, $base, $body = false)
+	{
+
+		$data = array(
+			'title' => $title,
+			'head'  => $head,
+			'base'  => $base
+		);
+		if ($body) {
+			$data['body'] = $body;
+		}
+
+		$data = json_encode($data);
+
+		return $this->client->request("/repos/$owner/$repo/pulls", 'POST', $data, 201, 'GitHubFullPull');
+	}
 }
 
