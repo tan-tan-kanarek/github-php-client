@@ -15,6 +15,7 @@ class GitHubCommit extends GitHubObject
 	{
 		return array_merge(parent::getAttributes(), array(
 			'url' => 'string',
+			'html_url' => 'string',
 			'sha' => 'string',
 			'author' => 'GitHubUser',
 			'committer' => 'GitHubUser',
@@ -27,7 +28,12 @@ class GitHubCommit extends GitHubObject
 	 * @var string
 	 */
 	protected $url;
-
+	
+	/**
+	 * @var string
+	 */
+	protected $html_url;
+	
 	/**
 	 * @var string
 	 */
@@ -61,6 +67,14 @@ class GitHubCommit extends GitHubObject
 		return $this->url;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getHtmlUrl()
+	{
+		return $this->html_url;
+	}
+        
 	/**
 	 * @return string
 	 */

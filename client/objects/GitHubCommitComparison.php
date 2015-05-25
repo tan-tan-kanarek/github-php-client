@@ -22,6 +22,7 @@ class GitHubCommitComparison extends GitHubObject
 			'ahead_by' => 'int',
 			'behind_by' => 'int',
 			'total_commits' => 'int',
+			'files' => 'array<GitHubFile>'
 		));
 	}
 	
@@ -75,6 +76,12 @@ class GitHubCommitComparison extends GitHubObject
 	 */
 	protected $total_commits;
 
+	/**
+	 *
+	 * @var GitHubFile[]
+	 */
+	protected $files;
+	
 	/**
 	 * @return string
 	 */
@@ -155,5 +162,13 @@ class GitHubCommitComparison extends GitHubObject
 		return $this->total_commits;
 	}
 
+	/**
+	 *
+	 * @return GitHubFile[]
+	 */
+	public function getFiles()
+	{
+		return $this->files;
+	}
 }
 
