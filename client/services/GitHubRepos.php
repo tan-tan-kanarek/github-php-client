@@ -189,6 +189,8 @@ class GitHubRepos extends GitHubService
 	/**
 	 * Create
 	 * 
+	 * @param $owner String (Optional) - The name of the organization, if organization not specified the repo will be created for the authenticated user.
+	 * @param $repo String (Required) - The name of the repository.
 	 * @param $private boolean (Optional) - `true` makes the repository private, and
 	 * 	`false` makes it public.
 	 * @param $has_issues boolean (Optional) - `true` to enable issues for this repository,
@@ -198,11 +200,18 @@ class GitHubRepos extends GitHubService
 	 * @param $has_downloads boolean (Optional) - `true` to enable downloads for this
 	 * 	repository, `false` to disable them. Default is `true`.
 	 * @param $default_branch String (Optional) - Update the default branch for this repository.
+	 * @param $description String (Optional) - A short description of the repository.
+	 * @param $homepage String (Optional) - A URL with more information about the repository.
+	 * @param $team_id int (Optional) - The id of the team that will be granted access to this repository. This is only valid when creating a repository in an organization.
+	 * @param $auto_init Boolean (Optional) - Pass true to create an initial commit with empty README. Default: false.
+	 * @param $gitignore_template String (Optional) - Desired language or platform .gitignore template to apply. Use the name of the template without the extension. For example, “Haskell”.
+	 * @param $license_template String (Optional) - Desired LICENSE template to apply. Use the name of the template without the extension. For example, “mit” or “mozilla”.
 	 * @return GitHubFullRepo
 	 */
-	public function create($owner, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null)
+	public function create($owner = null, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null, $description = null, $homepage = null, $team_id = null, $auto_init = null, $gitignore_template = null, $license_template = null)
 	{
-		$data = array();
+		$data = array('name' => $repo);
+		
 		if(!is_null($private))
 			$data['private'] = $private;
 		if(!is_null($has_issues))
@@ -213,8 +222,21 @@ class GitHubRepos extends GitHubService
 			$data['has_downloads'] = $has_downloads;
 		if(!is_null($default_branch))
 			$data['default_branch'] = $default_branch;
-		
-		return $this->client->request("/repos/$owner/$repo", 'PATCH', $data, 200, 'GitHubFullRepo');
+		if(!is_null($team_id))
+			$data['team_id'] = $team_id;
+		if(!is_null($auto_init))
+			$data['auto_init'] = $auto_init;
+		if(!is_null($gitignore_template))
+			$data['gitignore_template'] = $gitignore_template;
+		if(!is_null($license_template))
+			$data['license_template'] = $license_template;
+
+		$data = json_encode($data);
+
+		if($owner)
+			return $this->client->request("/orgs/$owner/repos", 'POST', $data, 201, 'GitHubFullRepo');
+		else
+			return $this->client->request("/user/repos", 'POST', $data, 201, 'GitHubFullRepo');
 	}
 	
 	/**
