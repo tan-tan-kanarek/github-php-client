@@ -114,4 +114,7 @@ $name = 'MyFile-1.0.0.jar';
 $client->repos->releases->assets->upload($owner, $repo, $releaseId, $name, $contentType, $filePath);
 ```
 
+*[8/06/2015] Fixed pull request comment function
+
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ivanfemia/github-php-client/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
