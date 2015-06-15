@@ -57,7 +57,21 @@ class GitHubPullsComments extends GitHubService
 	 * Create a comment
 	 * 
 	 */
-	public function createComment($owner, $repo, $number)
+	public function createComment($owner, $repo, $number, $body, $position, $id, $file)
+	{
+		$data = array();
+		$data["body"]=$body;
+		$data["commit_id"]=$id;
+		$data["path"]=$file;
+		$data["position"]=$position;
+		return $this->client->request("/repos/$owner/$repo/pulls/$number/comments", 'POST', json_encode($data), 201, 'GitHubPullComment');
+	}
+
+	/**
+	 * Delete a comment
+	 * 
+	 */
+	public function deleteComment($owner, $repo, $number)
 	{
 		$data = array();
 		
