@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../GitHubObject.php');
 require_once(__DIR__ . '/GitHubUser.php');
 require_once(__DIR__ . '/GitHubPullLinks.php');
 require_once(__DIR__ . '/GitHubPullBranch.php');
-	
+
 
 class GitHubPull extends GitHubObject
 {
@@ -37,9 +37,10 @@ class GitHubPull extends GitHubObject
 			'_links' => 'GitHubPullLinks',
 			'head' => 'GitHubPullBranch',
 			'base' => 'GitHubPullBranch',
+			'mergeable' => 'bool',
 		));
 	}
-	
+
 	/**
 	 * @var string
 	 */
@@ -155,6 +156,10 @@ class GitHubPull extends GitHubObject
 	 */
 	protected $base;
 
+	/**
+	 * @var bool
+	 */
+	protected $mergeable;
 
 	/**
 	 * @return string
@@ -338,6 +343,14 @@ class GitHubPull extends GitHubObject
 	public function getBase()
 	{
 		return $this->base;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isMergeable()
+	{
+		return $this->mergeable;
 	}
 }
 
