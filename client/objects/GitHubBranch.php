@@ -12,8 +12,21 @@ class GitHubBranch extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'name' => 'string'
 		));
 	}
-	
+
+	/**
+	 * @var string
+	 */
+	protected $name;
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 }
 
