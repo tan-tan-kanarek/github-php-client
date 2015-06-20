@@ -173,7 +173,7 @@ class GitHubRepos extends GitHubService
 	/**
 	 * List repositories
 	 * 
-	 * @param $since string (Optional) - The integer ID of the last Repository that you’ve seen.
+	 * @param $since string (Optional) - The integer ID of the last Repository that youï¿½ve seen.
 	 * 
 	 * @return array<GitHubSimpleRepo>
 	 */
@@ -204,8 +204,8 @@ class GitHubRepos extends GitHubService
 	 * @param $homepage String (Optional) - A URL with more information about the repository.
 	 * @param $team_id int (Optional) - The id of the team that will be granted access to this repository. This is only valid when creating a repository in an organization.
 	 * @param $auto_init Boolean (Optional) - Pass true to create an initial commit with empty README. Default: false.
-	 * @param $gitignore_template String (Optional) - Desired language or platform .gitignore template to apply. Use the name of the template without the extension. For example, “Haskell”.
-	 * @param $license_template String (Optional) - Desired LICENSE template to apply. Use the name of the template without the extension. For example, “mit” or “mozilla”.
+	 * @param $gitignore_template String (Optional) - Desired language or platform .gitignore template to apply. Use the name of the template without the extension. For example, ï¿½Haskellï¿½.
+	 * @param $license_template String (Optional) - Desired LICENSE template to apply. Use the name of the template without the extension. For example, ï¿½mitï¿½ or ï¿½mozillaï¿½.
 	 * @return GitHubFullRepo
 	 */
 	public function create($owner = null, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null, $description = null, $homepage = null, $team_id = null, $auto_init = null, $gitignore_template = null, $license_template = null)
@@ -296,7 +296,7 @@ class GitHubRepos extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/repos/$owner/$repo/branches", 'GET', $data, 200, 'GitHubBranches', true);
+		return $this->client->request("/repos/$owner/$repo/branches", 'GET', $data, 200, 'GitHubBranch', true);
 	}
 	
 	/**
