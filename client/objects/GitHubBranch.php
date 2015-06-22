@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . '/../GitHubObject.php');
 
-	
+
 
 class GitHubBranch extends GitHubObject
 {
@@ -12,7 +12,8 @@ class GitHubBranch extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
-			'name' => 'string'
+			'name' => 'string',
+			'commit' => 'GitHubCommit'
 		));
 	}
 
@@ -22,11 +23,24 @@ class GitHubBranch extends GitHubObject
 	protected $name;
 
 	/**
+	 * @var GitHubGitCommit
+	 */
+	protected $commit;
+
+	/**
 	 * @return string
 	 */
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return GitHubGitCommit
+	 */
+	public function getCommit()
+	{
+		return $this->commit;
 	}
 }
 
