@@ -380,8 +380,8 @@ abstract class GitHubClientBase
 			}
 		}
 
-		if($status !== $expectedHttpCode)
-			throw new GitHubClientException("Expected status [$expectedHttpCode], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
+		if((is_array($expectedHttpCode) && !in_array($status, $expectedHttpCode)) || (!is_array($expectedHttpCode) && $status !== $expectedHttpCode))
+			throw new GitHubClientException("Expected status [" . (is_array($expectedHttpCode) ? implode(', ', $expectedHttpCode) : $expectedHttpCode) . "], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
 		
 		if ( $returnType == 'string' )
 			return implode("\n", $content);
