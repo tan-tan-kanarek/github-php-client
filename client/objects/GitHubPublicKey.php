@@ -14,9 +14,11 @@ class GitHubPublicKey extends GitHubObject
 		return array_merge(parent::getAttributes(), array(
 			'id' => 'int',
 			'key' => 'string',
-			'verified' => 'boolean',
 			'url' => 'string',
 			'title' => 'string',
+			'verified' => 'boolean',
+			'created_at' => 'string',
+			'read_only' => 'boolean'
 		));
 	}
 
@@ -24,11 +26,6 @@ class GitHubPublicKey extends GitHubObject
 	 * @var int
 	 */
 	protected $id;
-
-	/**
-	 * @var boolean
-	 */
-	protected $verified;
 
 	/**
 	 * @var string
@@ -44,6 +41,21 @@ class GitHubPublicKey extends GitHubObject
 	 * @var string
 	 */
 	protected $title;
+
+	/**
+	 * @var boolean
+	 */
+	protected $verified;
+
+	/**
+	 * @var string
+	 */
+	protected $created_at;
+
+	/**
+	 * @var boolean
+	 */
+	protected $read_only;
 
 	/**
 	 * @return int
@@ -83,6 +95,22 @@ class GitHubPublicKey extends GitHubObject
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCreatedAt()
+	{
+		return $this->created_at;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getReadOnly()
+	{
+		return $this->read_only;
 	}
 
 }
