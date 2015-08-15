@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . '/GitHubSimplePublicKey.php');
 
-	
+
 
 class GitHubPublicKey extends GitHubObject
 {
@@ -12,11 +12,29 @@ class GitHubPublicKey extends GitHubObject
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'id' => 'int',
+			'key' => 'string',
+			'verified' => 'boolean',
 			'url' => 'string',
 			'title' => 'string',
 		));
 	}
-	
+
+	/**
+	 * @var int
+	 */
+	protected $id;
+
+	/**
+	 * @var boolean
+	 */
+	protected $verified;
+
+	/**
+	 * @var string
+	 */
+	protected $key;
+
 	/**
 	 * @var string
 	 */
@@ -26,6 +44,30 @@ class GitHubPublicKey extends GitHubObject
 	 * @var string
 	 */
 	protected $title;
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getVerified()
+	{
+		return $this->verified;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getKey()
+	{
+		return $this->key;
+	}
 
 	/**
 	 * @return string
@@ -44,4 +86,3 @@ class GitHubPublicKey extends GitHubObject
 	}
 
 }
-
