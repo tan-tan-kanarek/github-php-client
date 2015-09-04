@@ -30,7 +30,7 @@ class GitHubRepo extends GitHubSimpleRepo
 			'pushed_at' => 'string',
 			'created_at' => 'string',
 			'updated_at' => 'string',
-			'parent' => 'GitHubFullRepo',
+			'parent' => 'GitHubSimpleRepo',
 		));
 	}
 	
