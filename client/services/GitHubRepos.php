@@ -21,7 +21,7 @@ require_once(__DIR__ . '/../objects/GitHubTeam.php');
 require_once(__DIR__ . '/../objects/GitHubTag.php');
 require_once(__DIR__ . '/../objects/GitHubBranches.php');
 require_once(__DIR__ . '/../objects/GitHubBranch.php');
-	
+
 
 class GitHubRepos extends GitHubService
 {
@@ -30,70 +30,70 @@ class GitHubRepos extends GitHubService
 	 * @var GitHubReposCollaborators
 	 */
 	public $collaborators;
-	
+
 	/**
 	 * @var GitHubReposComments
 	 */
 	public $comments;
-	
+
 	/**
 	 * @var GitHubReposCommits
 	 */
 	public $commits;
-	
+
 	/**
 	 * @var GitHubReposContents
 	 */
 	public $contents;
-	
+
 	/**
 	 * @var GitHubReposDownloads
 	 */
 	public $downloads;
-	
+
 	/**
 	 * @var GitHubReposForks
 	 */
 	public $forks;
-	
+
 	/**
 	 * @var GitHubReposHooks
 	 */
 	public $hooks;
-	
+
 	/**
 	 * @var GitHubReposKeys
 	 */
 	public $keys;
-	
+
 	/**
 	 * @var GitHubReposMerging
 	 */
 	public $merging;
-	
+
 	/**
 	 * @var GitHubReposReleases
 	 */
 	public $releases;
-	
+
 	/**
 	 * @var GitHubReposStatistics
 	 */
 	public $statistics;
-	
+
 	/**
 	 * @var GitHubReposStatuses
 	 */
 	public $statuses;
-	
-	
+
+
 	/**
 	 * Initialize sub services
 	 */
 	public function __construct(GitHubClient $client)
 	{
 		parent::__construct($client);
-		
+
 		$this->collaborators = new GitHubReposCollaborators($client);
 		$this->comments = new GitHubReposComments($client);
 		$this->commits = new GitHubReposCommits($client);
@@ -107,14 +107,14 @@ class GitHubRepos extends GitHubService
 		$this->statistics = new GitHubReposStatistics($client);
 		$this->statuses = new GitHubReposStatuses($client);
 	}
-	
+
 	/**
 	 * List your repositories
-	 * 
-	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
-	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name 
+	 *
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all
+	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name
 	 * @param $direction string (Optional) - Can be one of asc or desc. Default: when using full_name: asc; otherwise desc
-	 * 
+	 *
 	 * @return array<GitHubSimpleRepo>
 	 */
 	public function listYourRepositories($type = null, $sort = null, $direction = null)
@@ -126,18 +126,18 @@ class GitHubRepos extends GitHubService
 			$data['sort'] = $sort;
 		if(!is_null($direction))
 			$data['direction'] = $direction;
-		
-		return $this->client->request("/user/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+
+		return $this->client->request("/user/repos", 'GET', $data, 200, 'GitHubRepo', true);
 	}
-	
+
 	/**
 	 * List user repositories
-	 * 
+	 *
 	 * @param $user string - User login name
-	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
-	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name 
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all
+	 * @param $sort string (Optional) - Can be one of created, updated, pushed, full_name. Default: full_name
 	 * @param $direction string (Optional) - Can be one of asc or desc. Default: when using full_name: asc; otherwise desc
-	 * 
+	 *
 	 * @return array<GitHubSimpleRepo>
 	 */
 	public function listUserRepositories($user, $type = null, $sort = null, $direction = null)
@@ -149,16 +149,16 @@ class GitHubRepos extends GitHubService
 			$data['sort'] = $sort;
 		if(!is_null($direction))
 			$data['direction'] = $direction;
-		
-		return $this->client->request("/users/$user/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
+
+		return $this->client->request("/users/$user/repos", 'GET', $data, 200, 'GitHubRepo', true);
 	}
-	
+
 	/**
 	 * List organization repositories
-	 * 
+	 *
 	 * @param $organization string - Organization name
-	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all 
-	 * 
+	 * @param $type string (Optional) - Can be one of all, owner, public, private, member. Default: all
+	 *
 	 * @return array<GitHubSimpleRepo>
 	 */
 	public function listOrganizationRepositories($organization, $type = null)
@@ -166,15 +166,15 @@ class GitHubRepos extends GitHubService
 		$data = array();
 		if(!is_null($type))
 			$data['type'] = $type;
-		
+
 		return $this->client->request("/orgs/$organization/repos", 'GET', $data, 200, 'GitHubSimpleRepo', true);
 	}
-	
+
 	/**
 	 * List repositories
-	 * 
+	 *
 	 * @param $since string (Optional) - The integer ID of the last Repository that you�ve seen.
-	 * 
+	 *
 	 * @return array<GitHubSimpleRepo>
 	 */
 	public function listRepositories($since = null)
@@ -182,13 +182,13 @@ class GitHubRepos extends GitHubService
 		$data = array();
 		if(!is_null($since))
 			$data['since'] = $since;
-		
+
 		return $this->client->request("/repositories", 'GET', $data, 200, 'GitHubSimpleRepo', true);
 	}
-	
+
 	/**
 	 * Create
-	 * 
+	 *
 	 * @param $owner String (Optional) - The name of the organization, if organization not specified the repo will be created for the authenticated user.
 	 * @param $repo String (Required) - The name of the repository.
 	 * @param $private boolean (Optional) - `true` makes the repository private, and
@@ -211,7 +211,7 @@ class GitHubRepos extends GitHubService
 	public function create($owner = null, $repo, $private = null, $has_issues = null, $has_wiki = null, $has_downloads = null, $default_branch = null, $description = null, $homepage = null, $team_id = null, $auto_init = null, $gitignore_template = null, $license_template = null)
 	{
 		$data = array('name' => $repo);
-		
+
 		if(!is_null($private))
 			$data['private'] = $private;
 		if(!is_null($has_issues))
@@ -238,89 +238,88 @@ class GitHubRepos extends GitHubService
 		else
 			return $this->client->request("/user/repos", 'POST', $data, 201, 'GitHubFullRepo');
 	}
-	
+
 	/**
 	 * Get Repo
-	 * 
+	 *
 	 * @return GitHubFullRepo
 	 */
 	public function get($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo", 'GET', $data, 200, 'GitHubFullRepo');
 	}
-	
+
 	/**
 	 * List contributors
-	 * 
+	 *
 	 * @return array<GitHubContributor>
 	 */
 	public function listContributors($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo/contributors", 'GET', $data, 200, 'GitHubContributor', true);
 	}
-	
+
 	/**
 	 * List languages
-	 * 
+	 *
 	 * @return array<GitHubTeam>
 	 */
 	public function listLanguages($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo/teams", 'GET', $data, 200, 'GitHubTeam', true);
 	}
-	
+
 	/**
 	 * List Tags
-	 * 
+	 *
 	 * @return array<GitHubTag>
 	 */
 	public function listTags($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo/tags", 'GET', $data, 200, 'GitHubTag', true);
 	}
-	
+
 	/**
 	 * List Branches
-	 * 
+	 *
 	 * @return array<GitHubBranches>
 	 */
 	public function listBranches($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo/branches", 'GET', $data, 200, 'GitHubBranch', true);
 	}
-	
+
 	/**
 	 * Get Branch
-	 * 
+	 *
 	 * @return array<GitHubBranch>
 	 */
 	public function getBranch($owner, $repo, $branch)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo/branches/$branch", 'GET', $data, 200, 'GitHubBranch', true);
 	}
-	
+
 	/**
 	 * Delete a Repository
-	 * 
+	 *
 	 */
 	public function deleteRepository($owner, $repo)
 	{
 		$data = array();
-		
+
 		return $this->client->request("/repos/$owner/$repo", 'DELETE', $data, 204, '');
 	}
-	
-}
 
+}
