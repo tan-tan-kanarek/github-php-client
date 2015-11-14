@@ -111,7 +111,7 @@ class GitHubIssues extends GitHubService
 	 * 
 	 * @return array<GitHubIssue>
 	 */
-	public function listIssues($owner, $repo, $milestone = null, $state = null, $assignee = null, $creator = null, $mentioned = null, $labels = null, $sort = null, $direction = null, $since)
+	public function listIssues($owner, $repo, $milestone = null, $state = null, $assignee = null, $creator = null, $mentioned = null, $labels = null, $sort = null, $direction = null, $since = null)
 	{
 		$data = array();
 		if(!is_null($milestone))
