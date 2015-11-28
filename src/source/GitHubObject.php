@@ -1,5 +1,7 @@
 <?php
 
+namespace Github\Source;
+
 class GitHubObject
 {
 	/**

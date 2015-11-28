@@ -1,5 +1,8 @@
 <?php
-require_once(__DIR__ . '/GithubClientException.php');
+namespace Github\Source;
+
+use Github\Source\GithubClientException;
+
 
 abstract class GitHubClientBase
 {

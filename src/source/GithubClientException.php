@@ -1,4 +1,7 @@
 <?php
+namespace Github\Source;
+
+use Exception;
 
 class GitHubClientException extends Exception
 {
