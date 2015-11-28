@@ -6,17 +6,19 @@ See [full API reference](https://github.com/tan-tan-kanarek/github-php-client/bl
 
 ```php
 <?php
-require_once(__DIR__ . '/client/GitHubClient.php');
+require_once "vendor/autoload.php";
+use Github\Client\GitHubClient;
 
 $client = new GitHubClient();
-$client->setCredentials($username, $password);
+$client->setCredentials($login, $password);
 ```
 
 ## Listing commits
 
 ```php
 <?php
-require_once(__DIR__ . '/client/GitHubClient.php');
+require_once "vendor/autoload.php";
+use Github\Client\GitHubClient;
 
 $owner = 'tan-tan-kanarek';
 $repo = 'github-php-client';
@@ -47,7 +49,8 @@ foreach($commits as $commit)
 
 ```php
 <?php
-require_once(__DIR__ . '/client/GitHubClient.php');
+require_once "vendor/autoload.php";
+use Github\Client\GitHubClient;
 
 $owner = 'tan-tan-kanarek';
 $repo = 'github-php-client';
@@ -69,7 +72,8 @@ foreach ($issues as $issue)
 
 ```php
 <?php
-require_once(__DIR__ . '/client/GitHubClient.php');
+require_once "vendor/autoload.php";
+use Github\Client\GitHubClient;
 
 $owner = 'tan-tan-kanarek';
 $repo = 'github-php-client';
@@ -85,7 +89,8 @@ $client->issues->createAnIssue($owner, $repo, $title, $body);
 
 ```php
 <?php
-require_once(__DIR__ . '/client/GitHubClient.php');
+require_once "vendor/autoload.php";
+use Github\Client\GitHubClient;
 
 $owner = 'tan-tan-kanarek';
 $repo = 'github-php-client';
@@ -113,7 +118,7 @@ $name = 'MyFile-1.0.0.jar';
 
 $client->repos->releases->assets->upload($owner, $repo, $releaseId, $name, $contentType, $filePath);
 ```
-
+*[11/28/2015] Refactor to work with composer autoload
 *[8/06/2015] Fixed pull request comment function
 
 
