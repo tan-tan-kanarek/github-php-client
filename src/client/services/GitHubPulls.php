@@ -1,12 +1,13 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/GitHubPullsComments.php');
-require_once(__DIR__ . '/../objects/GitHubPull.php');
-require_once(__DIR__ . '/../objects/GitHubFullPull.php');
-require_once(__DIR__ . '/../objects/GitHubCommit.php');
-require_once(__DIR__ . '/../objects/GitHubFile.php');
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Services\GitHubPullsComments;
+use Github\Client\Objects\GitHubPull;
+use Github\Client\Objects\GitHubFullPull;
+use Github\Client\Objects\GitHubCommit;
+use Github\Client\Objects\GitHubFile;
 	
 
 class GitHubPulls extends GitHubService

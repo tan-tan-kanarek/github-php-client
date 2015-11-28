@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubGist.php');
-
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubGist;
 
 class GitHubFullGist extends GitHubObject
 {

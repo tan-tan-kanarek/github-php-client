@@ -1,23 +1,23 @@
 <?php
+namespace Github\Client;
 
-require_once(__DIR__ . '/GitHubClientBase.php');
-require_once(__DIR__ . '/services/GitHubActivity.php');
-require_once(__DIR__ . '/services/GitHubChangelog.php');
-require_once(__DIR__ . '/services/GitHubGists.php');
-require_once(__DIR__ . '/services/GitHubGit.php');
-require_once(__DIR__ . '/services/GitHubGitignore.php');
-require_once(__DIR__ . '/services/GitHubIssues.php');
-require_once(__DIR__ . '/services/GitHubLibraries.php');
-require_once(__DIR__ . '/services/GitHubMarkdown.php');
-require_once(__DIR__ . '/services/GitHubMedia.php');
-require_once(__DIR__ . '/services/GitHubMeta.php');
-require_once(__DIR__ . '/services/GitHubOauth.php');
-require_once(__DIR__ . '/services/GitHubOrgs.php');
-require_once(__DIR__ . '/services/GitHubPulls.php');
-require_once(__DIR__ . '/services/GitHubRepos.php');
-require_once(__DIR__ . '/services/GitHubSearch.php');
-require_once(__DIR__ . '/services/GitHubUsers.php');
-
+use Github\Client\GitHubClientBase;
+use Github\Client\Services\GitHubActivity;
+use Github\Client\Services\GitHubChangelog;
+use Github\Client\Services\GitHubGists;
+use Github\Client\Services\GitHubGit;
+use Github\Client\Services\GitHubGitignore;
+use Github\Client\Services\GitHubIssues;
+use Github\Client\Services\GitHubLibraries;
+use Github\Client\Services\GitHubMarkdown;
+use Github\Client\Services\GitHubMedia;
+use Github\Client\Services\GitHubMeta;
+use Github\Client\Services\GitHubOauth;
+use Github\Client\Services\GitHubOrgs;
+use Github\Client\Services\GitHubPulls;
+use Github\Client\Services\GitHubRepos;
+use Github\Client\Services\GitHubSearch;
+use Github\Client\Services\GitHubUsers;
 
 class GitHubClient extends GitHubClientBase
 {

@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubOrg.php');
-
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubOrg;
 
 class GitHubFullOrg extends GitHubObject
 {

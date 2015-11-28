@@ -1,9 +1,9 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubFullIssueEvent.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubFullIssueEvent;
 
 class GitHubIssuesEvents extends GitHubService
 {

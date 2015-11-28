@@ -1,10 +1,10 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubOauthAccess.php');
-require_once(__DIR__ . '/../objects/GitHubOauthAccessWithUser.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubOauthAccess;
+use Github\Client\Objects\GitHubOauthAccessWithUser;
 
 class GitHubOauth extends GitHubService
 {

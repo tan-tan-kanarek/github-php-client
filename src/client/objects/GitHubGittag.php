@@ -1,8 +1,10 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubGittagTagger.php');
-require_once(__DIR__ . '/GitHubGittagObject.php');
+namespace Github\Client\Objects;
+
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubGittagTagger;
+use Github\Client\Objects\GitHubGittagObject;
 	
 
 class GitHubGittag extends GitHubObject

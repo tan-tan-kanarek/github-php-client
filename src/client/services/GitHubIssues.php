@@ -1,14 +1,14 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/GitHubIssuesAssignees.php');
-require_once(__DIR__ . '/GitHubIssuesComments.php');
-require_once(__DIR__ . '/GitHubIssuesEvents.php');
-require_once(__DIR__ . '/GitHubIssuesLabels.php');
-require_once(__DIR__ . '/GitHubIssuesMilestones.php');
-require_once(__DIR__ . '/../objects/GitHubIssue.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Services\GitHubIssuesAssignees;
+use Github\Client\Services\GitHubIssuesComments;
+use Github\Client\Services\GitHubIssuesEvents;
+use Github\Client\Services\GitHubIssuesLabels;
+use Github\Client\Services\GitHubIssuesMilestones;
+use Github\Client\Objects\GitHubIssue;
 
 class GitHubIssues extends GitHubService
 {
@@ -60,7 +60,7 @@ class GitHubIssues extends GitHubService
 	 * 					assigned: Issues assigned to you
 	 * 					created: Issues created by you
 	 * 					mentioned: Issues mentioning you
-	 * 					subscribed: Issues you’re subscribed to updates for
+	 * 					subscribed: Issues youï¿½re subscribed to updates for
 	 * 					all: All issues the authenticated user can see, regardless of participation or creation
 	 * 					Default: assigned
 	 * @param state string	Indicates the state of the issues to return. Can be either open, closed, or all. Default: open

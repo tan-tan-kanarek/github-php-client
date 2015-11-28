@@ -1,9 +1,10 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/GitHubGistsComments.php');
-require_once(__DIR__ . '/../objects/GitHubFullGist.php');
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Services\GitHubGistsComments;
+use Github\Client\Objects\GitHubFullGist;
 	
 
 class GitHubGists extends GitHubService

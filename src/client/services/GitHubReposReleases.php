@@ -1,9 +1,10 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubReposRelease.php');
-require_once(__DIR__ . '/GitHubReposReleasesAssets.php');
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubReposRelease;
+use Github\Client\Services\GitHubReposReleasesAssets;
 	
 
 class GitHubReposReleases extends GitHubService
@@ -50,7 +51,7 @@ class GitHubReposReleases extends GitHubService
 	/**
 	 * Create
 	 * @param $tag_name string (Required) The name of the tag.
-	 * @param $target_commitish string Specifies the commitish value that determines where the Git tag is created from. Can be any branch or commit SHA. Unused if the Git tag already exists. Default: the repository’s default branch (usually master).
+	 * @param $target_commitish string Specifies the commitish value that determines where the Git tag is created from. Can be any branch or commit SHA. Unused if the Git tag already exists. Default: the repositoryï¿½s default branch (usually master).
 	 * @param $name string The name of the release.
 	 * @param $body string Text describing the contents of the tag.
 	 * @param $draft boolean true to create a draft (unpublished) release, false to create a published one. Default: false
@@ -82,7 +83,7 @@ class GitHubReposReleases extends GitHubService
 	 * Create
 	 * @param $id int (Required) Release id.
 	 * @param $tag_name string (Required) The name of the tag.
-	 * @param $target_commitish string Specifies the commitish value that determines where the Git tag is created from. Can be any branch or commit SHA. Unused if the Git tag already exists. Default: the repository’s default branch (usually master).
+	 * @param $target_commitish string Specifies the commitish value that determines where the Git tag is created from. Can be any branch or commit SHA. Unused if the Git tag already exists. Default: the repositoryï¿½s default branch (usually master).
 	 * @param $name string The name of the release.
 	 * @param $body string Text describing the contents of the tag.
 	 * @param $draft boolean true to create a draft (unpublished) release, false to create a published one. Default: false

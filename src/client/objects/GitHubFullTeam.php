@@ -1,6 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubTeam.php');
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubTeam;
 
 	
 

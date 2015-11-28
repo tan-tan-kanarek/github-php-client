@@ -1,8 +1,9 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubUser.php');
-	
+namespace Github\Client\Objects;
+
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubUser;
 
 class GitHubIssueEvent extends GitHubObject
 {

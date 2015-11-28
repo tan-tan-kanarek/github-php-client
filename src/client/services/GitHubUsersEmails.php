@@ -1,9 +1,7 @@
 <?php
-
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-
-	
+namespace Github\Client\Services;
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
 
 class GitHubUsersEmails extends GitHubService
 {

@@ -1,8 +1,9 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubReposReleaseAsset.php');
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubReposReleaseAsset;
 
 	
 
@@ -35,7 +36,7 @@ class GitHubReposReleasesAssets extends GitHubService
 	
 	/**
 	 * Create
-	 * @param $contentType string (Required) The content type of the asset. This should be set in the Header. Example: “application/zip”. For a list of acceptable types, refer this list of common media types.
+	 * @param $contentType string (Required) The content type of the asset. This should be set in the Header. Example: ï¿½application/zipï¿½. For a list of acceptable types, refer this list of common media types.
 	 * @param $name string (Required) The file name of the asset. This should be set in the URI query parameter.
 	 * @param $filePath string (Required)
 	 * 

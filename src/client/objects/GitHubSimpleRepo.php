@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubUser.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubUser;
 
 class GitHubSimpleRepo extends GitHubObject
 {

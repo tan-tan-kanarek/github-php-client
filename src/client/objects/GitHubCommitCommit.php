@@ -1,10 +1,10 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubCommitCommitAuthor.php');
-require_once(__DIR__ . '/GitHubCommitCommitCommitter.php');
-require_once(__DIR__ . '/GitHubCommitCommitTree.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubCommitCommitAuthor;
+use Github\Client\Objects\GitHubCommitCommitCommitter;
+use Github\Client\Objects\GitHubCommitCommitTree;
 
 class GitHubCommitCommit extends GitHubObject
 {

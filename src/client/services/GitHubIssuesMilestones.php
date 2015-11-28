@@ -1,9 +1,9 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubMilestone.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubMilestone;
 
 class GitHubIssuesMilestones extends GitHubService
 {

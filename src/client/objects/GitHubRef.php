@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubRefObject.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubRefObject;
 
 class GitHubRef extends GitHubObject
 {

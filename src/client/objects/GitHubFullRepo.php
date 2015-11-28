@@ -1,8 +1,7 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-
-	
+use Github\Client\GitHubRepo;
 
 class GitHubFullRepo extends GitHubRepo
 {

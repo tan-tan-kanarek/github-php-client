@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubSubscription.php');
-
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubSubscription;
 
 class GitHubRepoSubscription extends GitHubObject
 {

@@ -1,8 +1,8 @@
 <?php
 
-require_once(__DIR__ . '/../GitHubObject.php');
+namespace Github\Client\Objects;
 
-	
+use Github\Client\GitHubObject;
 
 class GitHubGittagObject extends GitHubObject
 {

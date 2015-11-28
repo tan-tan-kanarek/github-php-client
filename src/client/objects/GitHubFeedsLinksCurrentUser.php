@@ -1,9 +1,7 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-
-	
-
+use Github\Client\GitHubObject;
 class GitHubFeedsLinksCurrentUser extends GitHubObject
 {
 	/* (non-PHPdoc)

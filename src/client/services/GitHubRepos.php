@@ -1,27 +1,27 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/GitHubReposCollaborators.php');
-require_once(__DIR__ . '/GitHubReposComments.php');
-require_once(__DIR__ . '/GitHubReposCommits.php');
-require_once(__DIR__ . '/GitHubReposContents.php');
-require_once(__DIR__ . '/GitHubReposDownloads.php');
-require_once(__DIR__ . '/GitHubReposForks.php');
-require_once(__DIR__ . '/GitHubReposHooks.php');
-require_once(__DIR__ . '/GitHubReposKeys.php');
-require_once(__DIR__ . '/GitHubReposMerging.php');
-require_once(__DIR__ . '/GitHubReposReleases.php');
-require_once(__DIR__ . '/GitHubReposStatistics.php');
-require_once(__DIR__ . '/GitHubReposStatuses.php');
-require_once(__DIR__ . '/../objects/GitHubSimpleRepo.php');
-require_once(__DIR__ . '/../objects/GitHubFullRepo.php');
-require_once(__DIR__ . '/../objects/GitHubContributor.php');
-require_once(__DIR__ . '/../objects/GitHubTeam.php');
-require_once(__DIR__ . '/../objects/GitHubTag.php');
-require_once(__DIR__ . '/../objects/GitHubBranches.php');
-require_once(__DIR__ . '/../objects/GitHubBranch.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Services\GitHubReposCollaborators;
+use Github\Client\Services\GitHubReposComments;
+use Github\Client\Services\GitHubReposCommits;
+use Github\Client\Services\GitHubReposContents;
+use Github\Client\Services\GitHubReposDownloads;
+use Github\Client\Services\GitHubReposForks;
+use Github\Client\Services\GitHubReposHooks;
+use Github\Client\Services\GitHubReposKeys;
+use Github\Client\Services\GitHubReposMerging;
+use Github\Client\Services\GitHubReposReleases;
+use Github\Client\Services\GitHubReposStatistics;
+use Github\Client\Services\GitHubReposStatuses;
+use Github\Client\Objects\GitHubSimpleRepo;
+use Github\Client\Objects\GitHubFullRepo;
+use Github\Client\Objects\GitHubContributor;
+use Github\Client\Objects\GitHubTeam;
+use Github\Client\Objects\GitHubTag;
+use Github\Client\Objects\GitHubBranches;
+use Github\Client\Objects\GitHubBranch;
 
 class GitHubRepos extends GitHubService
 {

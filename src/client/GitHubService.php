@@ -1,5 +1,7 @@
 <?php
-require_once(__DIR__ . '/GitHubClient.php');
+namespace Github\Client;
+
+use Github\Client\GitHubClient;
 
 class GitHubService
 {

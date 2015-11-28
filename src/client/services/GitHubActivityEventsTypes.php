@@ -1,9 +1,7 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-
-	
+use Github\Client\GitHubService;
 
 class GitHubActivityEventsTypes extends GitHubService
 {

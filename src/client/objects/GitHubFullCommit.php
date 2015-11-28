@@ -1,9 +1,10 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubCommit.php');
-require_once(__DIR__ . '/GitHubFullCommitStats.php');
-require_once(__DIR__ . '/GitHubFullCommitFiles.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubCommit;
+use Github\Client\Objects\GitHubFullCommitStats;
+use Github\Client\Objects\GitHubFullCommitFiles;
 
 class GitHubFullCommit extends GitHubObject
 {

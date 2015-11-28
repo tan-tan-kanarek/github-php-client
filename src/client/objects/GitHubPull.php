@@ -1,10 +1,10 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubUser.php');
-require_once(__DIR__ . '/GitHubPullLinks.php');
-require_once(__DIR__ . '/GitHubPullBranch.php');
-
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubUser;
+use Github\Client\Objects\GitHubPullLinks;
+use Github\Client\Objects\GitHubPullBranch;
 
 class GitHubPull extends GitHubObject
 {

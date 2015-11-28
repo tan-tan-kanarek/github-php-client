@@ -1,13 +1,13 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubFeedsLinksTimeline.php');
-require_once(__DIR__ . '/GitHubFeedsLinksUser.php');
-require_once(__DIR__ . '/GitHubFeedsLinksCurrentUserPublic.php');
-require_once(__DIR__ . '/GitHubFeedsLinksCurrentUser.php');
-require_once(__DIR__ . '/GitHubFeedsLinksCurrentUserActor.php');
-require_once(__DIR__ . '/GitHubFeedsLinksCurrentUserOrganization.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubFeedsLinksTimeline;
+use Github\Client\Objects\GitHubFeedsLinksUser;
+use Github\Client\Objects\GitHubFeedsLinksCurrentUserPublic;
+use Github\Client\Objects\GitHubFeedsLinksCurrentUser;
+use Github\Client\Objects\GitHubFeedsLinksCurrentUserActor;
+use Github\Client\Objects\GitHubFeedsLinksCurrentUserOrganization;
 
 class GitHubFeedsLinks extends GitHubObject
 {

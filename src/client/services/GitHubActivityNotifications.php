@@ -1,9 +1,9 @@
 <?php
-
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubThread.php');
-require_once(__DIR__ . '/../objects/GitHubSubscription.php');
+namespace Github\Client\Services;
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubThread;
+use Github\Client\Objects\GitHubSubscription;
 	
 
 class GitHubActivityNotifications extends GitHubService

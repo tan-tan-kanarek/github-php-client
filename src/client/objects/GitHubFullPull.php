@@ -1,8 +1,9 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubPull.php');
-require_once(__DIR__ . '/GitHubUser.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubPull;
+use Github\Client\Objects\GitHubUser;
 
 class GitHubFullPull extends GitHubPull
 {

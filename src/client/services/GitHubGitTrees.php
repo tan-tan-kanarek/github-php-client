@@ -1,10 +1,10 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubTree.php');
-require_once(__DIR__ . '/../objects/GitHubTreeExtra.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubTree;
+use Github\Client\Objects\GitHubTreeExtra;
 
 class GitHubGitTrees extends GitHubService
 {

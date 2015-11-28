@@ -1,9 +1,10 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/../objects/GitHubRepoStatsContributors.php');
-require_once(__DIR__ . '/../objects/GitHubRepoStatsCommitActivity.php');
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Objects\GitHubRepoStatsContributors;
+use Github\Client\Objects\GitHubRepoStatsCommitActivity;
 	
 
 class GitHubReposStatistics extends GitHubService

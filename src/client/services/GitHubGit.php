@@ -1,14 +1,14 @@
 <?php
+namespace Github\Client\Services;
 
-require_once(__DIR__ . '/../GitHubClient.php');
-require_once(__DIR__ . '/../GitHubService.php');
-require_once(__DIR__ . '/GitHubGitBlobs.php');
-require_once(__DIR__ . '/GitHubGitCommits.php');
-require_once(__DIR__ . '/GitHubGitImport.php');
-require_once(__DIR__ . '/GitHubGitRefs.php');
-require_once(__DIR__ . '/GitHubGitTags.php');
-require_once(__DIR__ . '/GitHubGitTrees.php');
-	
+use Github\Client\GitHubClient;
+use Github\Client\GitHubService;
+use Github\Client\Services\GitHubGitBlobs;
+use Github\Client\Services\GitHubGitCommits;
+use Github\Client\Services\GitHubGitImport;
+use Github\Client\Services\GitHubGitRefs;
+use Github\Client\Services\GitHubGitTags;
+use Github\Client\Services\GitHubGitTrees;
 
 class GitHubGit extends GitHubService
 {

@@ -1,9 +1,9 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubSimpleRepo.php');
-require_once(__DIR__ . '/GitHubThreadSubject.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubSimpleRepo;
+use Github\Client\Objects\GitHubThreadSubject;
 
 class GitHubThread extends GitHubObject
 {

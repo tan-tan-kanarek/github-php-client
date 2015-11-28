@@ -1,9 +1,9 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubUser.php');
-require_once(__DIR__ . '/GitHubPullCommentLinks.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubUser;
+use Github\Client\Objects\GitHubPullCommentLinks;
 
 class GitHubPullComment extends GitHubObject
 {

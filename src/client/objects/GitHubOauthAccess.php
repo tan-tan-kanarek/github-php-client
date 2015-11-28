@@ -1,8 +1,8 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/../GitHubObject.php');
-require_once(__DIR__ . '/GitHubOauthAccessApp.php');
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubOauthAccessApp;
 
 class GitHubOauthAccess extends GitHubObject
 {

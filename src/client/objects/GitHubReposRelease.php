@@ -1,9 +1,9 @@
 <?php
+namespace Github\Client\Objects;
 
-require_once(__DIR__ . '/GitHubGitCommitAuthor.php');
-require_once(__DIR__ . '/GitHubReposReleaseAsset.php');
-
-	
+use Github\Client\GitHubObject;
+use Github\Client\Objects\GitHubGitCommitAuthor;
+use Github\Client\Objects\GitHubReposReleaseAsset;
 
 class GitHubReposRelease extends GitHubObject
 {

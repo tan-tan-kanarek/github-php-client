@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/GitHubClientException.php');
+namespace Github\Client;
+use Github\Client\GitHubClientException;
 
 abstract class GitHubClientBase
 {
@@ -288,6 +289,11 @@ abstract class GitHubClientBase
 	
 	public function request($url, $method, $data, $expectedHttpCode, $returnType, $isArray = false)
 	{
+        if ($returnType != 'stdClass') {
+            if (strpos($returnType, '\\Github\\Client\\Objects\\') === false) {
+                $returnType = '\\Github\\Client\\Objects\\' . $returnType;
+            }
+        }
 		$this->lastUrl = $url;
 		$this->lastMethod = $method;
 		$this->lastData = $data;
