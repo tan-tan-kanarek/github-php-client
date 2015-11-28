@@ -410,6 +410,9 @@ abstract class GitHubClientBase
 	
 	public function upload($url, $data, $expectedHttpCode, $returnType, $contentType, $filePath)
 	{
+        if (strpos($returnType, '\\Github\\Client\\Objects') === false) {
+            $returnType = '\\Github\\Client\\Objects\\' . $returnType;
+        }
 		$method = 'FILE';
 		
 		$this->lastUrl = $url;
