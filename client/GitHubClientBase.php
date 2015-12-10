@@ -5,6 +5,7 @@ abstract class GitHubClientBase
 {
 	const GITHUB_AUTH_TYPE_BASIC = 'basic';
 	const GITHUB_AUTH_TYPE_OAUTH_BASIC = 'x-oauth-basic';
+        const GITHUB_AUTH_TYPE_OAUTH = 'Oauth';
 
 	protected $url = 'https://api.github.com';
 	protected $uploadUrl = 'https://uploads.github.com';
@@ -38,6 +39,9 @@ abstract class GitHubClientBase
 			case self::GITHUB_AUTH_TYPE_OAUTH_BASIC:
 				$this->authType = self::GITHUB_AUTH_TYPE_OAUTH_BASIC;
 				break;
+            case self::GITHUB_AUTH_TYPE_OAUTH:
+                $this->authType = self::GITHUB_AUTH_TYPE_OAUTH;
+                break;
 			case self::GITHUB_AUTH_TYPE_BASIC:
 			default:
 				$this->authType = self::GITHUB_AUTH_TYPE_BASIC;
@@ -63,6 +67,15 @@ abstract class GitHubClientBase
 		}
 		$this->oauthKey = $key;
 	}
+
+    public function setOauthToken($token) 
+    {
+        if($this->authType != self::GITHUB_AUTH_TYPE_OAUTH) 
+        {
+            throw new GitHubClientException("Cannot set OAuth token when authentication type is not 'oauth'");
+        }
+        $this->oauthToken = $token;
+    }
 
 	public function setDebug($debug)
 	{
@@ -193,6 +206,11 @@ abstract class GitHubClientBase
 			curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 			curl_setopt($c, CURLOPT_USERPWD, "$this->oauthKey:".self::GITHUB_AUTH_TYPE_OAUTH_BASIC);
 		}
+        elseif ( $this->authType == self::GITHUB_AUTH_TYPE_OAUTH ) {
+            curl_setopt($c, CURLOPT_HTTPHEADER, array(
+                 'Authorization: token '. $this->oauthToken,
+            ));
+        }
 		 
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLOPT_USERAGENT, "tan-tan.github-api");
@@ -240,6 +258,9 @@ abstract class GitHubClientBase
 					'X-HTTP-Method-Override: PUT', 
 					'Content-type: application/x-www-form-urlencoded'
 				);
+                if ( $this->authType == self::GITHUB_AUTH_TYPE_OAUTH ) {
+                    array_push( $headers, 'Authorization: token '. $this->oauthToken );
+                }
 				
 				if(count($data))
 				{
