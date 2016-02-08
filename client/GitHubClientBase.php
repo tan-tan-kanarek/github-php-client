@@ -15,6 +15,7 @@ abstract class GitHubClientBase
 	protected $timeout = 240;
 	protected $rateLimit = 0;
 	protected $rateLimitRemaining = 0;
+	protected $rateLimitReset = 0;
 	
 	protected $authType = self::GITHUB_AUTH_TYPE_BASIC;
 	protected $oauthKey = null;
@@ -82,6 +83,11 @@ abstract class GitHubClientBase
 	public function getRateLimitRemaining()
 	{
 		return $this->rateLimitRemaining;
+	}
+
+	public function getRateLimitReset()
+	{
+		return $this->rateLimitReset;
 	}
 	
 	protected function resetPage()
@@ -354,6 +360,10 @@ abstract class GitHubClientBase
 						
 					case 'X-RateLimit-Remaining': 
 						$this->rateLimitRemaining = intval($line[1]); 
+						break;
+						
+					case 'X-RateLimit-Reset': 
+						$this->rateLimitReset = intval($line[1]); 
 						break;
 						
 					case 'Link':
