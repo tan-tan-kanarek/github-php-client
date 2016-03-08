@@ -114,6 +114,47 @@ $name = 'MyFile-1.0.0.jar';
 $client->repos->releases->assets->upload($owner, $repo, $releaseId, $name, $contentType, $filePath);
 ```
 
+## Pagination
+
+```php
+<?php
+require_once(__DIR__ . '/client/GitHubClient.php');
+
+$owner = 'tan-tan-kanarek';
+$repos = array(
+	'github-php-client',
+);
+
+$client = new GitHubClient();
+
+foreach($repos as $repo)
+{
+	$pageSize = 4;
+	$client->setPage();
+	$client->setPageSize($pageSize);
+	
+	$commits = $client->repos->commits->listCommitsOnRepository($owner, $repo);
+	while(true)
+	{
+		$page = $client->getPage();
+		echo "================ Page $page - " . count($commits) . " items ================\n";
+		foreach($commits as $commit)
+		{
+			/* @var $commit GitHubCommit */
+			$sha = $commit->getSha();
+			$message = $commit->getCommit()->getMessage();
+			
+			echo "\t$sha - $message\n";
+		}
+		
+		$commits = $client->getNextPage();
+		if($client->getPage() == $page)
+			break;
+	}
+}
+```
+
+
 *[8/06/2015] Fixed pull request comment function
 
 
