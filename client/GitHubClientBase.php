@@ -95,6 +95,14 @@ abstract class GitHubClientBase
 		$this->page = $page;
 	}
 	
+	public function getPage()
+	{
+		if($this->page)
+			return $this->page;
+		
+		return $this->lastPage;
+	}
+	
 	public function setPageSize($pageSize)
 	{
 		$this->pageSize = $pageSize;
