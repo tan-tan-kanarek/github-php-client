@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../GitHubObject.php');
+require_once(__DIR__ . '/../objects/GitHubTree.php');
 
 	
 
@@ -14,6 +15,7 @@ class GitHubTreeExtra extends GitHubObject
 		return array_merge(parent::getAttributes(), array(
 			'sha' => 'string',
 			'url' => 'string',
+			'tree' => 'array<GitHubTree>',
 		));
 	}
 	
@@ -26,6 +28,11 @@ class GitHubTreeExtra extends GitHubObject
 	 * @var string
 	 */
 	protected $url;
+
+	/**
+	 * @var GitHubTree
+	 */
+	protected $tree;
 
 	/**
 	 * @return string
@@ -41,6 +48,14 @@ class GitHubTreeExtra extends GitHubObject
 	public function getUrl()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @return GitHubTree
+	 */
+	public function getTree()
+	{
+		return $this->tree;
 	}
 
 }
