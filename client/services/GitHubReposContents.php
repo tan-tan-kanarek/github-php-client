@@ -7,7 +7,6 @@ require_once(__DIR__ . '/../objects/GitHubRepoContentCommit.php');
 require_once(__DIR__ . '/../objects/GitHubReadmeContent.php');
 require_once(__DIR__ . '/../objects/GitHubContents.php');
 
-
 class GitHubReposContents extends GitHubService
 {
 
