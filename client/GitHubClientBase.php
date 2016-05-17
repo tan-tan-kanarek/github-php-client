@@ -5,6 +5,7 @@ abstract class GitHubClientBase
 {
 	const GITHUB_AUTH_TYPE_BASIC = 'basic';
 	const GITHUB_AUTH_TYPE_OAUTH_BASIC = 'x-oauth-basic';
+        const GITHUB_AUTH_TYPE_OAUTH = 'Oauth';
 
 	protected $url = 'https://api.github.com';
 	protected $uploadUrl = 'https://uploads.github.com';
@@ -15,6 +16,7 @@ abstract class GitHubClientBase
 	protected $timeout = 240;
 	protected $rateLimit = 0;
 	protected $rateLimitRemaining = 0;
+	protected $rateLimitReset = 0;
 	
 	protected $authType = self::GITHUB_AUTH_TYPE_BASIC;
 	protected $oauthKey = null;
@@ -38,6 +40,9 @@ abstract class GitHubClientBase
 			case self::GITHUB_AUTH_TYPE_OAUTH_BASIC:
 				$this->authType = self::GITHUB_AUTH_TYPE_OAUTH_BASIC;
 				break;
+            case self::GITHUB_AUTH_TYPE_OAUTH:
+                $this->authType = self::GITHUB_AUTH_TYPE_OAUTH;
+                break;
 			case self::GITHUB_AUTH_TYPE_BASIC:
 			default:
 				$this->authType = self::GITHUB_AUTH_TYPE_BASIC;
@@ -64,6 +69,15 @@ abstract class GitHubClientBase
 		$this->oauthKey = $key;
 	}
 
+    public function setOauthToken($token) 
+    {
+        if($this->authType != self::GITHUB_AUTH_TYPE_OAUTH) 
+        {
+            throw new GitHubClientException("Cannot set OAuth token when authentication type is not 'oauth'");
+        }
+        $this->oauthToken = $token;
+    }
+
 	public function setDebug($debug)
 	{
 		$this->debug = $debug;
@@ -83,6 +97,11 @@ abstract class GitHubClientBase
 	{
 		return $this->rateLimitRemaining;
 	}
+
+	public function getRateLimitReset()
+	{
+		return $this->rateLimitReset;
+	}
 	
 	protected function resetPage()
 	{
@@ -93,6 +112,14 @@ abstract class GitHubClientBase
 	public function setPage($page = 1)
 	{
 		$this->page = $page;
+	}
+	
+	public function getPage()
+	{
+		if($this->page)
+			return $this->page;
+		
+		return $this->lastPage;
 	}
 	
 	public function setPageSize($pageSize)
@@ -193,6 +220,11 @@ abstract class GitHubClientBase
 			curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 			curl_setopt($c, CURLOPT_USERPWD, "$this->oauthKey:".self::GITHUB_AUTH_TYPE_OAUTH_BASIC);
 		}
+        elseif ( $this->authType == self::GITHUB_AUTH_TYPE_OAUTH ) {
+            curl_setopt($c, CURLOPT_HTTPHEADER, array(
+                 'Authorization: token '. $this->oauthToken,
+            ));
+        }
 		 
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLOPT_USERAGENT, "tan-tan.github-api");
@@ -240,6 +272,9 @@ abstract class GitHubClientBase
 					'X-HTTP-Method-Override: PUT', 
 					'Content-type: application/x-www-form-urlencoded'
 				);
+                if ( $this->authType == self::GITHUB_AUTH_TYPE_OAUTH ) {
+                    array_push( $headers, 'Authorization: token '. $this->oauthToken );
+                }
 				
 				if(count($data))
 				{
@@ -356,6 +391,10 @@ abstract class GitHubClientBase
 						$this->rateLimitRemaining = intval($line[1]); 
 						break;
 						
+					case 'X-RateLimit-Reset': 
+						$this->rateLimitReset = intval($line[1]); 
+						break;
+						
 					case 'Link':
 						$matches = null;
 						if(preg_match_all('/<https:\/\/api\.github\.com\/[^?]+\?([^>]+)>; rel="([^"]+)"/', $line[1], $matches))
@@ -380,8 +419,8 @@ abstract class GitHubClientBase
 			}
 		}
 
-		if($status !== $expectedHttpCode)
-			throw new GitHubClientException("Expected status [$expectedHttpCode], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
+		if((is_array($expectedHttpCode) && !in_array($status, $expectedHttpCode)) || (!is_array($expectedHttpCode) && $status !== $expectedHttpCode))
+			throw new GitHubClientException("Expected status [" . (is_array($expectedHttpCode) ? implode(', ', $expectedHttpCode) : $expectedHttpCode) . "], actual status [$status], URL [$url]", GitHubClientException::INVALID_HTTP_CODE);
 		
 		if ( $returnType == 'string' )
 			return implode("\n", $content);
