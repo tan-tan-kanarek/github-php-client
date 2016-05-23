@@ -3,7 +3,6 @@
 require_once(__DIR__ . '/../GitHubClient.php');
 require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubRepoContent.php');
-require_once(__DIR__ . '/../objects/GitHubRepoContentCommit.php');
 require_once(__DIR__ . '/../objects/GitHubReadmeContent.php');
 require_once(__DIR__ . '/../objects/GitHubContents.php');
 
