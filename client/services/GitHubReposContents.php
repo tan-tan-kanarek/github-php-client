@@ -47,7 +47,7 @@ class GitHubReposContents extends GitHubService
 	 * @param $message	string	Required. The commit message.
 	 * @param $content	string	Required. The new file content, Base64 encoded.
 	 * @param $branch	string	The branch name. Default: the repository’s default branch (usually master)
-	 * @return GitHubRepoContentCommit
+	 * @return GitHubRepoCommit
 	 */
 	public function createFile($owner, $repo, $path, $msg, $content, $branch='master')
 	{
@@ -56,7 +56,7 @@ class GitHubReposContents extends GitHubService
 		$data['content'] = $content;
 		$data['branch'] = $branch;
 		
-		return $this->client->request("/repos/$owner/$repo/contents/$path", 'PUT', $data, 201, 'GitHubRepoContentCommit');
+		return $this->client->request("/repos/$owner/$repo/contents/$path", 'PUT', $data, 201, 'GitHubRepoCommit');
 	}
 
 	/**
@@ -67,7 +67,7 @@ class GitHubReposContents extends GitHubService
 	 * @param $content	string	Required. The updated file content, Base64 encoded.
 	 * @param $sha	string	Required. The blob SHA of the file being replaced.
 	 * @param $branch	string	The branch name. Default: the repository’s default branch (usually master)
-	 * @return GitHubRepoContentCommit
+	 * @return GitHubRepoCommit
 	 */
 	public function updateFile($owner, $repo, $path, $msg, $content, $sha, $branch='master')
 	{
@@ -77,7 +77,7 @@ class GitHubReposContents extends GitHubService
 		$data['ref'] = $branch;
 		$data['sha'] = $sha;
 
-		return $this->client->request("/repos/$owner/$repo/contents/$path", 'PUT', $data, 200, 'GitHubRepoContentCommit');
+		return $this->client->request("/repos/$owner/$repo/contents/$path", 'PUT', $data, 200, 'GitHubRepoCommit');
 	}
 
 	/**
@@ -87,7 +87,7 @@ class GitHubReposContents extends GitHubService
 	 * @param $message	string	Required. The commit message.
 	 * @param $sha	string	Required. The blob SHA of the file being replaced.
 	 * @param $branch	string	The branch name. Default: the repository’s default branch (usually master)
-	 * @return GitHubRepoContentCommit
+	 * @return GitHubRepoCommit
 	 */
 	public function deleteFile($owner, $repo, $path, $msg, $content, $sha, $branch='master')
 	{
@@ -96,7 +96,7 @@ class GitHubReposContents extends GitHubService
 		$data['branch'] = $branch;
 		$data['sha'] = $sha;
 
-		return $this->client->request("/repos/$owner/$repo/contents/$path", 'DELETE', $data, 200, 'GitHubRepoContentCommit');
+		return $this->client->request("/repos/$owner/$repo/contents/$path", 'DELETE', $data, 200, 'GitHubRepoCommit');
 	}
 	
 }
