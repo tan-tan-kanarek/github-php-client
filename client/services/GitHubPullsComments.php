@@ -75,7 +75,7 @@ class GitHubPullsComments extends GitHubService
 	{
 		$data = array();
 		$data["body"]=$body;
-		return $this->client->request("/repos/$owner/$repo/pulls/comments/$number", 'PATCH', $data, 200, '');
+		return $this->client->request("/repos/$owner/$repo/pulls/comments/$number", 'PATCH', json_encode($data), 200, 'GitHubPullComment');
 	}
 
 	/**
@@ -86,7 +86,7 @@ class GitHubPullsComments extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/repos/$owner/$repo/pulls/comments/$number", 'DELETE', $data, 204, '');
+		return $this->client->request("/repos/$owner/$repo/pulls/comments/$number", 'DELETE', json_encode($data), 204, '');
 	}
 	
 }
