@@ -68,6 +68,17 @@ class GitHubPullsComments extends GitHubService
 	}
 
 	/**
+	 * Edit a comment
+	 *
+	 */
+	public function editComment($owner, $repo, $number, $body)
+	{
+		$data = array();
+		$data["body"]=$body;
+		return $this->client->request("/repos/$owner/$repo/pulls/comments/$number", 'PATCH', $data, 200, '');
+	}
+
+	/**
 	 * Delete a comment
 	 * 
 	 */
