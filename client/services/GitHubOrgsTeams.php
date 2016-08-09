@@ -87,7 +87,7 @@ class GitHubOrgsTeams extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/teams/$id/members/$user", 'GET', $data, 204, '');
+		return $this->client->request("/teams/$id/memberships/$user", 'GET', $data, 200, '');
 	}
 
 	/**
@@ -95,7 +95,7 @@ class GitHubOrgsTeams extends GitHubService
 	 */
 	public function addTeamMember($id, $user) {
 		$data = array();
-		return $this->client->request("/teams/$id/members/$user", 'PUT', $data, 204, '');
+		return $this->client->request("/teams/$id/memberships/$user", 'PUT', $data, 200, '');
 	}
 
 	/**
@@ -114,7 +114,7 @@ class GitHubOrgsTeams extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/teams/$id/members/$user", 'DELETE', $data, 204, '');
+		return $this->client->request("/teams/$id/memberships/$user", 'DELETE', $data, 204, '');
 	}
 	
 	/**
