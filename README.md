@@ -147,6 +147,10 @@ foreach($repos as $repo)
 			echo "\t$sha - $message\n";
 		}
 		
+
+		if(!$client->hasNextPage())
+			break;
+			
 		$commits = $client->getNextPage();
 		if($client->getPage() == $page)
 			break;

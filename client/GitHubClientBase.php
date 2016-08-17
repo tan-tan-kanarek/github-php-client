@@ -152,6 +152,11 @@ abstract class GitHubClientBase
 		return $this->requestLast($this->lastData);
 	}
 	
+	public function hasNextPage()
+	{
+		return !is_null($this->page);
+	}
+	
 	public function getNextPage()
 	{
 		if(isset($this->pageData['next']))
