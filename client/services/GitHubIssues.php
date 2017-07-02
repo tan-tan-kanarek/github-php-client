@@ -99,11 +99,39 @@ class GitHubIssues extends GitHubService
 	/**
 	 * List issues
 	 * 
+	 * @param $milestone number (Optional) - Milestone to associate this issue with.
+	 * @param state string	Indicates the state of the issues to return. Can be either open, closed, or all. Default: open
+	 * @param $assignee string (Optional) - Login for the user that this issue should be assigned to.
+	 * @param $creator string (Optional) - Login for the user that created this issue.
+	 * @param $mentioned string (Optional) - Login for a user mentioned in this issue.
+	 * @param labels string	A list of comma separated label names. Example: bug,ui,@high
+	 * @param sort string	What to sort results by. Can be either created, updated, comments. Default: created
+	 * @param direction string	The direction of the sort. Can be either asc or desc. Default: desc
+	 * @param since string	Only issues updated at or after this time are returned. This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+	 * 
 	 * @return array<GitHubIssue>
 	 */
-	public function listIssues($owner, $repo)
+	public function listIssues($owner, $repo, $milestone = null, $state = null, $assignee = null, $creator = null, $mentioned = null, $labels = null, $sort = null, $direction = null, $since = null)
 	{
 		$data = array();
+		if(!is_null($milestone))
+			$data['milestone'] = $milestone;
+		if(!is_null($state))
+			$data['state'] = $state;
+		if(!is_null($assignee))
+			$data['assignee'] = $assignee;
+		if(!is_null($creator))
+			$data['creator'] = $creator;
+		if(!is_null($mentioned))
+			$data['mentioned'] = $mentioned;
+		if(!is_null($labels))
+			$data['labels'] = $labels;
+		if(!is_null($sort))
+			$data['sort'] = $sort;
+		if(!is_null($direction))
+			$data['direction'] = $direction;
+		if(!is_null($since))
+			$data['since'] = $since;
 
 		return $this->client->request("/repos/$owner/$repo/issues", 'GET', $data, 200, 'GitHubIssue', true);
 	}
