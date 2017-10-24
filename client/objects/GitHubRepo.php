@@ -30,6 +30,7 @@ class GitHubRepo extends GitHubSimpleRepo
 			'pushed_at' => 'string',
 			'created_at' => 'string',
 			'updated_at' => 'string',
+			'parent' => 'GitHubSimpleRepo',
 		));
 	}
 	
@@ -122,6 +123,11 @@ class GitHubRepo extends GitHubSimpleRepo
 	 * @var string
 	 */
 	protected $updated_at;
+
+	/**
+	 * @var GitHubFullRepo
+	*/
+	protected $parent;
 
 	/**
 	 * @return string
@@ -265,6 +271,14 @@ class GitHubRepo extends GitHubSimpleRepo
 	public function getUpdatedAt()
 	{
 		return $this->updated_at;
+	}
+
+	/**
+	 * @return GitHubFullRepo
+	*/
+	public function getParent()
+	{
+		return $this->parent;
 	}
 
 }
