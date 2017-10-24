@@ -80,6 +80,19 @@ class GitHubIssuesLabels extends GitHubService
 		
 		return $this->client->request("/repos/$owner/$repo/issues/$number/labels", 'PUT', $data, 200, 'GitHubLabel', true);
 	}
+
+	/**
+	 * Remove label from an issue
+	 *
+	 */
+	public function removeLabelFromAnIssue($owner, $repo, $number, $name)
+	{
+		$data = array();
+
+		$name = rawurlencode( $name );
+
+		return $this->client->request("/repos/$owner/$repo/issues/$number/labels/$name", 'DELETE', $data, 204, '');
+	}
 	
 	/**
 	 * Remove all labels from an issue

@@ -963,10 +963,10 @@ Attributes:
 
 Returns array of GitHubUser objects
 
-**responseIfRequesterIsNotAnOrganizationMember:**
+**removeMember:**
 
 Expected HTTP status: 204
-*Response if requester is not an organization member*
+*Remove a member*
 
 
 Attributes:

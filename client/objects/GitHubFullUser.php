@@ -12,6 +12,7 @@ class GitHubFullUser extends GitHubUser
 	protected function getAttributes()
 	{
 		return array_merge(parent::getAttributes(), array(
+			'login' => 'string',
 			'name' => 'string',
 			'company' => 'string',
 			'blog' => 'string',
@@ -26,9 +27,15 @@ class GitHubFullUser extends GitHubUser
 			'html_url' => 'string',
 			'created_at' => 'string',
 			'type' => 'string',
+			'avatar_url' => 'string',
 		));
 	}
 	
+	/**
+	 * @var string
+	 */
+	protected $login;
+
 	/**
 	 * @var string
 	 */
@@ -98,6 +105,14 @@ class GitHubFullUser extends GitHubUser
 	 * @var string
 	 */
 	protected $type;
+
+	/**
+	 * @return string
+	 */
+	public function getLogin()
+	{
+		return $this->login;
+	}
 
 	/**
 	 * @return string
@@ -211,5 +226,12 @@ class GitHubFullUser extends GitHubUser
 		return $this->type;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getAvatarUrl()
+	{
+		return $this->avatar_url;
+	}
 }
 
