@@ -16,7 +16,7 @@ class GitHubUsersFollowers extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/user/following/$user", 'PUT', $data, 204, '');
+		return $this->client->request('/users/'.$user.'/followers', 'GET', $data, 200, 'GitHubFullUser');
 	}
 	
 }
