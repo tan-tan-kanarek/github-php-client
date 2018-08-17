@@ -216,19 +216,19 @@ abstract class GitHubClientBase
 				curl_setopt($c, CURLOPT_POST, true);
 				curl_setopt($c, CURLOPT_POSTFIELDS, file_get_contents($filePath));
 				
-				if(count($data))
+				if(@count($data))
 					$url .= '?' . http_build_query($data);
 				break;
 				
 			case 'GET':
 				curl_setopt($c, CURLOPT_HTTPGET, true);
-				if(count($data))
+				if(@count($data))
 					$url .= '?' . http_build_query($data);
 				break;
 				
 			case 'POST':
 				curl_setopt($c, CURLOPT_POST, true);
-				if(count($data))
+				if(@count($data))
 					curl_setopt($c, CURLOPT_POSTFIELDS, $data);
 				break;
 				
@@ -241,7 +241,7 @@ abstract class GitHubClientBase
 					'Content-type: application/x-www-form-urlencoded'
 				);
 				
-				if(count($data))
+				if(@count($data))
 				{
 					$content = json_encode($data, JSON_FORCE_OBJECT);
 				
