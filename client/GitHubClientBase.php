@@ -301,8 +301,16 @@ abstract class GitHubClientBase
 
 				if ( $data )
 				{
+					if (@count($data))
+					{
+						$content = json_encode($data, JSON_FORCE_OBJECT);
+					}
+					else
+					{
+						$content = $data;
+					}
+					curl_setopt($c, CURLOPT_POSTFIELDS, $content);
 					curl_setopt($c, CURLOPT_POST, true);
-					curl_setopt($c, CURLOPT_POSTFIELDS, $data);
 				}
 				break;
 		}
