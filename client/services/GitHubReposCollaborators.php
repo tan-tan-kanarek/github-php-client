@@ -27,7 +27,7 @@ class GitHubReposCollaborators extends GitHubService
 	{
 		$data = array();
 		
-		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'PUT', $data, 204, '');
+		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'PUT', $data, 201, '');
 	}
 	
 	/**
