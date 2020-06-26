@@ -60,7 +60,7 @@ class GitHubIssues extends GitHubService
 	 * 					assigned: Issues assigned to you
 	 * 					created: Issues created by you
 	 * 					mentioned: Issues mentioning you
-	 * 					subscribed: Issues you’re subscribed to updates for
+	 * 					subscribed: Issues youï¿½re subscribed to updates for
 	 * 					all: All issues the authenticated user can see, regardless of participation or creation
 	 * 					Default: assigned
 	 * @param state string	Indicates the state of the issues to return. Can be either open, closed, or all. Default: open
@@ -221,9 +221,7 @@ class GitHubIssues extends GitHubService
 			}
 			$data['assignees'] = $assignees;
 		}
-
-		$data = json_encode($data);
-
+		
 		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data, 200, 'GitHubIssue');
 	}		
 	
