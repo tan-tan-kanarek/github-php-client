@@ -60,7 +60,7 @@ class GitHubIssues extends GitHubService
 	 * 					assigned: Issues assigned to you
 	 * 					created: Issues created by you
 	 * 					mentioned: Issues mentioning you
-	 * 					subscribed: Issues you’re subscribed to updates for
+	 * 					subscribed: Issues youï¿½re subscribed to updates for
 	 * 					all: All issues the authenticated user can see, regardless of participation or creation
 	 * 					Default: assigned
 	 * @param state string	Indicates the state of the issues to return. Can be either open, closed, or all. Default: open
@@ -153,26 +153,34 @@ class GitHubIssues extends GitHubService
 	 * 
 	 * @param $title string (Required) - The title of the issue.
 	 * @param $body string (Optional) - The contents of the issue.
-	 * @param $assignee string (Optional) - Login for the user that this issue should be assigned to.
+	 * @param $assignees array (Optional) of **strings** - Login(s) for the user(s) that this issue
+	 *  should be assigned to. Supplying a string here still works for backwards compatibility but
+	 *  will be removed in the future.
 	 * @param $milestone number (Optional) - Milestone to associate this issue with.
 	 * @param $labels array (Optional) of strings - Labels to associate with this issue. 
 	 * 	Pass one or more Labels to _replace_ the set of Labels on this Issue. 
 	 * 	Send an empty array (`[]`) to clear all Labels from the Issue.
 	 * @return GitHubIssue
 	 */
-	public function createAnIssue($owner, $repo, $title, $body = null, $assignee = null, $milestone = null, $labels = null)
+	public function createAnIssue($owner, $repo, $title, $body = null, $assignees = null, $milestone = null, $labels = null)
 	{
 		$data = array();
 		$data['title'] = $title;
 		if(!is_null($body))
 			$data['body'] = $body;
-		if(!is_null($assignee))
-			$data['assignee'] = $assignee;
 		if(!is_null($milestone))
 			$data['milestone'] = $milestone;
 		if(!is_null($labels))
 			$data['labels'] = $labels;
-		
+
+		if(!is_null($assignees)) {
+			if (is_string($assignees)) {
+				trigger_error('Assignees: supplying a string is deprecated, please supply an array of strings.', E_USER_DEPRECATED);
+				$assignees = array($assignees);
+			}
+			$data['assignees'] = $assignees;
+		}
+
 		$data = json_encode($data);
 		
 		return $this->client->request("/repos/$owner/$repo/issues", 'POST', $data, 201, 'GitHubIssue');
@@ -182,8 +190,9 @@ class GitHubIssues extends GitHubService
 	 * Edit an issue
 	 * 
 	 * @param $body string (Optional) - The contents of the issue.
-	 * @param $assignee string (Optional) - Login for the user that this issue should be
-	 * 	assigned to.
+	 * @param $assignees array (Optional) of **strings** - Login(s) for the user(s) that this issue
+	 *  should be assigned to. Supplying a string here still works for backwards compatibility but
+	 *  will be removed in the future.
 	 * @param $state string (Optional) - State of the issue: `open` or `closed`.
 	 * @param $milestone number (Optional) - Milestone to associate this issue with.
 	 * @param $labels array (Optional) of **strings** - Labels to associate with this
@@ -191,22 +200,29 @@ class GitHubIssues extends GitHubService
 	 * 	Issue. Send an empty array (`[]`) to clear all Labels from the Issue.
 	 * @return GitHubIssue
 	 */
-	public function editAnIssue($owner, $repo, $title, $number, $body = null, $assignee = null, $state = null, $milestone = null, $labels = null)
+	public function editAnIssue($owner, $repo, $title = null, $number, $body = null, $assignees = null, $state = null, $milestone = null, $labels = null)
 	{
 		$data = array();
-		$data['title'] = $title;
+		if(!is_null($title))
+			$data['title'] = $title;
 		if(!is_null($body))
 			$data['body'] = $body;
-		if(!is_null($assignee))
-			$data['assignee'] = $assignee;
 		if(!is_null($state))
 			$data['state'] = $state;
 		if(!is_null($milestone))
 			$data['milestone'] = $milestone;
 		if(!is_null($labels))
 			$data['labels'] = $labels;
+
+		if(!is_null($assignees)) {
+			if (is_string($assignees)) {
+				trigger_error('Assignees: supplying a string is deprecated, please supply an array of strings.', E_USER_DEPRECATED);
+				$assignees = array($assignees);
+			}
+			$data['assignees'] = $assignees;
+		}
 		
-		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', json_encode($data), 200, 'GitHubIssue');
+		return $this->client->request("/repos/$owner/$repo/issues/$number", 'PATCH', $data, 200, 'GitHubIssue');
 	}		
 	
 }

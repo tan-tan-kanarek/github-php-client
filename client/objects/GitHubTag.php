@@ -15,6 +15,7 @@ class GitHubTag extends GitHubObject
 			'name' => 'string',
 			'zipball_url' => 'string',
 			'tarball_url' => 'string',
+			'commit' => 'string',
 		));
 	}
 	
@@ -55,6 +56,14 @@ class GitHubTag extends GitHubObject
 	public function getTarballUrl()
 	{
 		return $this->tarball_url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCommit()
+	{
+		return $this->commit;
 	}
 
 }

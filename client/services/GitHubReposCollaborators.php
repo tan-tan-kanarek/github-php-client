@@ -4,7 +4,6 @@ require_once(__DIR__ . '/../GitHubClient.php');
 require_once(__DIR__ . '/../GitHubService.php');
 require_once(__DIR__ . '/../objects/GitHubUser.php');
 	
-
 class GitHubReposCollaborators extends GitHubService
 {
 
@@ -21,15 +20,34 @@ class GitHubReposCollaborators extends GitHubService
 	}
 	
 	/**
+	 * PUT
+	 * 
+	 */
+	public function put($owner, $repo, $user)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'PUT', $data, 201, '');
+	}
+	
+	/**
 	 * Get
 	 * 
 	 */
 	public function get($owner, $repo, $user)
 	{
 		$data = array();
-		
-		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'PUT', $data, 204, '');
+		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'GET', $data, 204, '');
 	}
-	
-}
 
+	/**
+	 * DELETE
+	 * 
+	 */
+	public function delete($owner, $repo, $user)
+	{
+		$data = array();
+		
+		return $this->client->request("/repos/$owner/$repo/collaborators/$user", 'DELETE', $data, 204, '');
+	}
+}

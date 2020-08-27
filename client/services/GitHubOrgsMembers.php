@@ -21,14 +21,23 @@ class GitHubOrgsMembers extends GitHubService
 	}
 	
 	/**
-	 * Response if requester is not an organization member
+	 * Remove member
 	 * 
 	 */
-	public function responseIfRequesterIsNotAnOrganizationMember($org, $user)
+	public function removeMember($org, $user)
 	{
 		$data = array();
 		
 		return $this->client->request("/orgs/$org/members/$user", 'DELETE', $data, 204, '');
+	}
+	
+	/**
+	 * Remove member
+	 * @deprecated
+	 */
+	public function responseIfRequesterIsNotAnOrganizationMember($org, $user)
+	{
+		return $this->removeMember($org, $user);
 	}
 	
 	/**
