@@ -21,6 +21,7 @@ class GitHubSimpleRepo extends GitHubObject
 			'fork' => 'boolean',
 			'url' => 'string',
 			'html_url' => 'string',
+            'archived' => 'boolean'
 		));
 	}
 	
@@ -68,6 +69,11 @@ class GitHubSimpleRepo extends GitHubObject
 	 * @var string
 	 */
 	protected $html_url;
+
+    /**
+     * @var boolean
+     */
+    protected $archived;
 
 	/**
 	 * @return int
@@ -140,6 +146,14 @@ class GitHubSimpleRepo extends GitHubObject
 	{
 		return $this->html_url;
 	}
+
+    /**
+     * @return bool
+     */
+    public function getArchivedStatus()
+    {
+        return $this->archived;
+    }
 
 }
 
