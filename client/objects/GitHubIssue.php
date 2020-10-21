@@ -22,6 +22,7 @@ class GitHubIssue extends GitHubObject
 			'body' => 'string',
 			'user' => 'GitHubUser',
 			'assignee' => 'GitHubUser',
+            'assignees' => 'array<GitHubUser>',
 			'milestone' => 'GitHubMilestone',
 			'comments' => 'int',
 			'closed_at' => 'string',
@@ -70,6 +71,11 @@ class GitHubIssue extends GitHubObject
 	 * @var GitHubUser
 	 */
 	protected $assignee;
+
+    /**
+     * @var array<GitHubUser>
+     */
+    protected $assignees;
 
 	/**
 	 * @var GitHubMilestone
@@ -164,6 +170,14 @@ class GitHubIssue extends GitHubObject
 	{
 		return $this->assignee;
 	}
+
+    /**
+     * @return array<GitHubUser>
+     */
+    public function getAssignees()
+    {
+        return $this->assignees;
+    }
 
 	/**
 	 * @return GitHubMilestone
