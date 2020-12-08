@@ -20,6 +20,7 @@ class GitHubIssue extends GitHubObject
 			'state' => 'string',
 			'title' => 'string',
 			'body' => 'string',
+            'labels' => 'array<GitHubLabel>',
 			'user' => 'GitHubUser',
 			'assignee' => 'GitHubUser',
             'assignees' => 'array<GitHubUser>',
@@ -61,6 +62,11 @@ class GitHubIssue extends GitHubObject
 	 * @var string
 	 */
 	protected $body;
+
+    /**
+     * @var array<GitHubLabel>
+     */
+    protected $labels;
 
 	/**
 	 * @var GitHubUser
@@ -154,6 +160,14 @@ class GitHubIssue extends GitHubObject
 	{
 		return $this->body;
 	}
+
+    /**
+     * @return array<GitHubLabel>
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
 
 	/**
 	 * @return GitHubUser
